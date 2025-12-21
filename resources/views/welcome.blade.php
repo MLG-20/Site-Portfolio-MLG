@@ -4,20 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $personalInfo->name }} | Portfolio</title>
-    
-    <!-- Liens CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Note la fonction asset() qui pointe vers le dossier public -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7EZN4396E1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-7EZN4396E1');
-</script>
+    <!-- FAVICON -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    
+    <!-- META TAGS (SEO & Social) -->
+    <meta name="description" content="Découvrez le portfolio de Mamadou Lamine Gueye, Développeur Web et Data Analyst.">
+    <meta property="og:title" content="{{ $personalInfo->name }} | Développeur & Data Analyst">
+    <meta property="og:description" content="Le pont entre la technique et la stratégie d'entreprise.">
+    <meta property="og:image" content="{{ asset('images/image-de-partage.jpg') }}">
+    <meta property="og:url" content="https://www.tonfutursite.com/">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7EZN4396E1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7EZN4396E1');
+    </script>
 </head>
 <body>
 
@@ -38,29 +47,23 @@
         <div class="accueil-content">
             <h3>Bonjour, je suis</h3>
             <h1>{{ $personalInfo->name }}</h1>
-            <!-- On utilisera JS pour les titres dynamiques -->
-            <h3>Et je suis <span class="multiple-text"></span></h3>
+            <!-- Dans la section accueil -->
+            <h3>Et je suis <span id="typed-text" class="multiple-text"></span></h3>
             <p>{{ $personalInfo->description }}</p>
             <div class="social-media">
-                <a href="{{ $personalInfo->linkedin }}"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="{{ $personalInfo->github }}"><i class="fa-brands fa-github"></i></a>
+                <a href="{{ $personalInfo->linkedin }}" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="{{ $personalInfo->github }}" target="_blank"><i class="fa-brands fa-github"></i></a>
                 <a href="mailto:{{ $personalInfo->email }}"><i class="fa-solid fa-envelope"></i></a>
-                <a href="tel:{{ str_replace(' ', '', $personalInfo->phone) }}"><i class="fa-solid fa-phone"></i>
+                <a href="tel:{{ str_replace(' ', '', $personalInfo->phone) }}"><i class="fa-solid fa-phone"></i></a>
             </div>
             <a href="{{ Storage::url($personalInfo->cv_path) }}" class="btn" download>Télécharger CV</a>
         </div>
         <div class="accueil-img">
-            <img src="{{ Storage::url($personalInfo->profile_image) }}" alt="Photo de profil">
+            <img src="{{ Storage::url($personalInfo->profile_image) }}" alt="Photo de profil" loading="lazy">
         </div>
-         <!-- AJOUTE LE SÉPARATEUR ICI -->
-    <div class="custom-shape-divider-bottom-1702822476" style="background-color: var(--bg-color);">
-        <svg data-name="Layer 1" ... >
-            <path d="..." class="shape-fill" fill="#323946"></path> <!-- La couleur de la section suivante -->
-        </svg>
-    </div>
     </section>
 
-    <!-- SECTION EXPÉRIENCE (Boucle dynamique) -->
+    <!-- SECTION EXPÉRIENCE -->
     <section class="experience" id="experience">
         <h2 class="titre-section">Mon <span>Parcours</span></h2>
         <div class="experience-container">
@@ -75,56 +78,37 @@
         </div>
     </section>
 
-    <!-- SECTION PROJETS (Boucle dynamique) -->
+    <!-- SECTION PROJETS -->
     <section class="projets" id="projets">
         <h2 class="titre-section">Mes <span>Projets</span></h2>
         <div class="projets-container">
             @foreach($projects as $projet)
             <div class="projets-box">
-                <img src="{{ Storage::url($projet->image) }}" alt="{{ $projet->title }}">
+                <img src="{{ Storage::url($projet->image) }}" alt="{{ $projet->title }}" loading="lazy">
                 <div class="projets-layer">
-                    <h4>{{ $projet->title }}</h4>
-                    <p>{{Str::limit($projet->description, 100) }}</p>
-                    <div class="tags">
-                        @php
-                            // 1. On récupère la valeur brute
-                            $rawTags = $projet->tags;
-
-                            // 2. Si c'est du texte (String), on le décode en JSON
-                            if (is_string($rawTags)) {
-                                $tags = json_decode($rawTags, true);
-                            } 
-                            // 3. Si c'est déjà un tableau (Array), on le garde
-                            elseif (is_array($rawTags)) {
-                                $tags = $rawTags;
-                            }
-                            // 4. Sinon (null ou autre), on met un tableau vide pour ne pas planter
-                            else {
-                                $tags = [];
-                            }
-                        @endphp
-
-                        @foreach($tags ?? [] as $tag)
-                            <span style="font-size: 1.2rem; background:var(--main-color); color:#000; padding:2px 8px; border-radius:4px; margin-right:5px;">
-                                {{ $tag }}
-                            </span>
-                        @endforeach
+                    <a href="{{ route('projects.show', $projet) }}" class="project-title-link">
+                        <h4>{{ $projet->title }}</h4>
+                    </a>
+                    <div class="project-links">
+                        @if($projet->github_link)
+                            <a href="{{ $projet->github_link }}" target="_blank" title="Voir sur GitHub"><i class="fa-brands fa-github"></i></a>
+                        @endif
+                        @if($projet->demo_link)
+                            <a href="{{ $projet->demo_link }}" target="_blank" title="Voir la démo"><i class="fa-solid fa-up-right-from-square"></i></a>
+                        @endif
                     </div>
-                    <a href="{{ $projet->demo_link }}"><i class="fa-solid fa-up-right-from-square"></i></a>
                 </div>
             </div>
             @endforeach
         </div>
     </section>
 
-    <!-- CONTACT (Avec le formulaire Laravel) -->
+    <!-- SECTION CONTACT -->
     <section class="contact" id="contact">
         <h2 class="titre-section">Contactez-<span>moi !</span></h2>
-        
         @if(session('success'))
             <div class="alert-success">{{ session('success') }}</div>
         @endif
-
         <form action="{{ route('contact.store') }}" method="POST">
             @csrf 
             <div class="input-box">
@@ -139,7 +123,7 @@
             <input type="submit" value="Envoyer" class="btn">
         </form>
     </section>
-
+    
     <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-text">
@@ -147,23 +131,42 @@
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
+     <!-- =============================================================== -->
+    <!--          BLOC DE SCRIPTS FINAL ET CORRIGÉ                       -->
+    <!-- =============================================================== -->
+
+    <!-- 1. On charge toutes les librairies externes d'abord -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
+    <!-- 2. Ensuite, on charge ton script principal qui les utilise -->
     <script src="{{ asset('js/main.js') }}"></script>
-    
-    <!-- Script pour l'animation de texte dynamique depuis la BDD -->
+     
     <script>
-        const typed = new Typed('.multiple-text', {
-            // On convertit le tableau PHP en JSON pour le JS
-            strings: @json($personalInfo->titles), 
-            typeSpeed: 100,
-            backSpeed: 100,
-            backDelay: 1000,
-            loop: true
-        });
-    </script>
-    <script src="https://unpkg.com/scrollreveal"></script> <!-- <-- AJOUTE CETTE LIGNE -->
-    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
+// Animation Typed.js - Version propre et fonctionnelle
+document.addEventListener('DOMContentLoaded', function() {
+    const typedElement = document.getElementById('typed-text');
+    if (!typedElement || typeof Typed === 'undefined') return;
+    
+    const titles = @json($personalInfo->titles ?? []);
+    const defaultTitles = ['Développeur Web', 'Data Analyst', 'Freelance'];
+    const titlesToUse = Array.isArray(titles) && titles.length > 0 ? titles : defaultTitles;
+    
+    new Typed('#typed-text', {
+        strings: titlesToUse,
+        typeSpeed: 100,
+        backSpeed: 50,
+        backDelay: 1000,
+        loop: true,
+        showCursor: true,
+        cursorChar: '|'
+    });
+});
+</script>
+
+    <!-- Bouton Retour en Haut -->
+    <a href="#accueil" class="back-to-top"><i class="fa-solid fa-arrow-up"></i></a>
+    
 </body>
 </html>

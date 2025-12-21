@@ -8,3 +8,4 @@ Route::get('/', [PortfolioController::class, 'index'])->name('home');
 
 Route::post('/contact', [PortfolioController::class, 'storeMessage'])->name('contact.store');
 
+Route::get('/projets/{project}', [PortfolioController::class, 'showProject'])->name('projects.show');

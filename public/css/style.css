@@ -7,339 +7,115 @@
     --bg-color: #1f242d;
     --second-bg-color: #323946;
     --text-color: #fff;
-
-    /* CORRECTION : On utilise 2 variables pour la couleur principale */
-    --main-color-solid: #00c6ff; /* Pour les textes, bordures et ombres */
-    --main-color-gradient: linear-gradient(45deg, #00c6ff, #0072ff); /* Pour les fonds et textes spéciaux */
+    --main-color-solid: #00c6ff;
+    --main-color-gradient: linear-gradient(45deg, #00c6ff, #0072ff);
 }
 
 /* 2. STYLES DE BASE */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    border: none;
-    outline: none;
-    scroll-behavior: smooth;
-    font-family: 'Poppins', sans-serif;
+    margin: 0; padding: 0; box-sizing: border-box;
+    text-decoration: none; border: none; outline: none;
+    scroll-behavior: smooth; font-family: 'Poppins', sans-serif;
 }
-
-html {
-    font-size: 62.5%;
-    overflow-x: hidden;
-}
-
-body {
-    background: var(--bg-color);
-    color: var(--text-color);
-}
-
-section {
-    min-height: 100vh;
-    padding: 10rem 9% 2rem;
-}
+html { font-size: 62.5%; overflow-x: hidden; }
+body { background: var(--bg-color); color: var(--text-color); }
+section { min-height: 100vh; padding: 10rem 9% 2rem; }
+.alert-success { background: #0072ff; color: white; padding: 1rem; text-align: center; border-radius: .5rem; margin: 0 auto 2rem; max-width: 70rem; font-weight: bold; }
 
 /* 3. HEADER */
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 2rem 9%;
-    background: var(--bg-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 100;
-    transition: all .3s;
-}
-.header.sticky {
-    border-bottom: .1rem solid rgba(0, 0, 0, .2);
-}
-
-.logo {
-    font-size: 2.5rem;
-    color: var(--text-color);
-    font-weight: 600;
-    cursor: default;
-}
-
-.navbar a {
-    font-size: 1.7rem;
-    color: var(--text-color);
-    margin-left: 4rem;
-    transition: .3s;
-}
-
-.navbar a:hover,
-.navbar a.active {
-    color: var(--main-color-solid); /* CORRECTION */
-}
-
-#menu-icon {
-    font-size: 3.6rem;
-    color: var(--text-color);
-    display: none;
-}
+.header { position: fixed; top: 0; left: 0; width: 100%; padding: 2rem 9%; background: var(--bg-color); display: flex; justify-content: space-between; align-items: center; z-index: 100; transition: all .3s; }
+.header.sticky { border-bottom: .1rem solid rgba(0, 0, 0, .2); }
+.logo { font-size: 2.5rem; color: var(--text-color); font-weight: 600; cursor: default; }
+.navbar a { font-size: 1.7rem; color: var(--text-color); margin-left: 4rem; transition: .3s; }
+.navbar a:hover, .navbar a.active { color: var(--main-color-solid); }
+#menu-icon { font-size: 3.6rem; color: var(--text-color); display: none; }
 
 /* 4. SECTION ACCUEIL */
-section.accueil {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 5rem;
-}
-
-.accueil-content {
-    flex: 1 1 50rem;
-}
-
-.accueil-img {
-    flex: 1 1 40rem;
-    text-align: center;
-}
-
-.accueil-img img {
-    max-width: 35vw;
-    min-width: 280px;
-    width: 100%;
-    border-radius: 50%;
-    
-    /* CORRECTION : On utilise la couleur simple pour la bordure et l'ombre */
-    border: .7rem solid var(--main-color-solid);
-    box-shadow: 0 0 2.5rem var(--main-color-solid);
-
-    /* On garde les deux animations */
-    animation: floatImage 4s ease-in-out infinite,
-               auraGlow 6s ease-in-out infinite;
-}
-
-/* CORRECTION : Animation de lueur avec la couleur simple */
-@keyframes auraGlow {
-    0%, 100% { box-shadow: 0 0 4rem var(--main-color-solid), 0 0 8rem rgba(0, 198, 255, 0.5); }
-    50% { box-shadow: 0 0 5rem var(--main-color-solid), 0 0 10rem rgba(0, 114, 255, 0.7); }
-}
-
-@keyframes floatImage {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-2rem); }
-}
-
+section.accueil { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 5rem; }
+.accueil-content { flex: 1 1 50rem; }
+.accueil-img { flex: 1 1 40rem; text-align: center; }
+.accueil-img img { max-width: 35vw; min-width: 280px; width: 100%; border-radius: 50%; border: .7rem solid var(--main-color-solid); box-shadow: 0 0 2.5rem var(--main-color-solid); animation: floatImage 4s ease-in-out infinite, auraGlow 6s ease-in-out infinite; }
+@keyframes auraGlow { 0%, 100% { box-shadow: 0 0 4rem var(--main-color-solid), 0 0 8rem rgba(0, 198, 255, 0.5); } 50% { box-shadow: 0 0 5rem var(--main-color-solid), 0 0 10rem rgba(0, 114, 255, 0.7); } }
+@keyframes floatImage { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2rem); } }
 .accueil-content h3 { font-size: 3.2rem; font-weight: 700; }
 .accueil-content h3:nth-of-type(2) { margin-bottom: 2rem; }
 .accueil-content h1 { font-size: 5.6rem; font-weight: 700; line-height: 1.3; }
-.accueil-content p { font-size: 1.6rem; }
-
-.social-media a {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 4rem;
-    height: 4rem;
-    background: transparent;
-    border-radius: 50%;
-    font-size: 2rem;
-    margin: 3rem 1.5rem 3rem 0;
-    transition: .5s ease;
-    
-    /* CORRECTION */
-    border: .2rem solid var(--main-color-solid);
-    color: var(--main-color-solid);
-}
-.social-media a:hover {
-    background: var(--main-color-gradient); /* On garde le dégradé pour le fond */
-    color: var(--second-bg-color);
-    box-shadow: 0 0 1rem var(--main-color-solid);
-}
+.accueil-content p { font-size: 1.6rem; line-height: 1.8; }
+.social-media a { display: inline-flex; justify-content: center; align-items: center; width: 4rem; height: 4rem; background: transparent; border-radius: 50%; font-size: 2rem; margin: 3rem 1.5rem 3rem 0; transition: .5s ease; border: .2rem solid var(--main-color-solid); color: var(--main-color-solid); }
+.social-media a:hover { background: var(--main-color-gradient); color: var(--second-bg-color); box-shadow: 0 0 1rem var(--main-color-solid); }
 
 /* 5. BOUTON UNIVERSEL */
-.btn {
-    display: inline-block;
-    padding: 1rem 2.8rem;
-    background: var(--main-color-gradient); /* On garde le dégradé */
-    border-radius: 4rem;
-    font-size: 1.6rem;
-    color: var(--second-bg-color);
-    letter-spacing: .1rem;
-    font-weight: 600;
-    transition: .5s ease;
-    box-shadow: 0 0 1rem var(--main-color-solid);
-}
-.btn:hover {
-    box-shadow: none;
-}
+.btn { display: inline-block; padding: 1rem 2.8rem; background: var(--main-color-gradient); border-radius: 4rem; font-size: 1.6rem; color: var(--second-bg-color); letter-spacing: .1rem; font-weight: 600; transition: .5s ease; box-shadow: 0 0 1rem var(--main-color-solid); }
+.btn:hover { box-shadow: none; }
 
-/* 6. TITRES DE SECTION AVEC DÉGRADÉ */
-.titre-section span {
-    background: var(--main-color-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-.titre-section {
-    text-align: center;
-    font-size: 4.5rem;
-}
+/* 6. TITRES DE SECTION */
+.titre-section { text-align: center; font-size: 4.5rem; margin-bottom: 5rem; }
+.titre-section span { background: var(--main-color-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 
 /* 7. SECTION EXPÉRIENCE */
-.experience {
-    background: var(--second-bg-color);
-}
-.experience-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-}
-.experience-box {
-    flex: 1 1 30rem;
-    background: var(--bg-color);
-    padding: 3rem 2rem 4rem;
-    border-radius: 2rem;
-    text-align: center;
-    border: .2rem solid var(--bg-color);
-    transition: .5s ease;
-}
-.experience-box:hover {
-    border-color: var(--main-color-solid); /* CORRECTION */
-    transform: scale(1.02);
-}
-.experience-box i {
-    font-size: 7rem;
-    background: var(--main-color-gradient); /* On utilise le dégradé pour l'icône */
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+.experience { background: var(--second-bg-color); }
+.experience-container { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 2rem; }
+.experience-box { flex: 1 1 30rem; background: var(--bg-color); padding: 3rem 2rem 4rem; border-radius: 2rem; text-align: center; border: .2rem solid var(--bg-color); transition: .5s ease; }
+.experience-box:hover { border-color: var(--main-color-solid); transform: scale(1.02); }
+.experience-box i { font-size: 7rem; background: var(--main-color-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .experience-box h3 { font-size: 2.6rem; }
 .experience-box p { font-size: 1.6rem; margin: 1rem 0 3rem; }
 
 /* 8. SECTION PROJETS */
-.projets {
-    background: var(--second-bg-color);
-}
-.projets-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
-    gap: 3rem;
-}
-.projets-box {
-    position: relative;
-    border-radius: 2rem;
-    overflow: hidden;
-    display: flex;
-    box-shadow: 0 1rem 3rem rgba(0,0,0,0.2);
-}
-.projets-box img {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    transition: transform .5s ease;
-}
-.projets-box:hover img {
-    transform: scale(1.05);
-}
-.projets-box .projets-layer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 2.5rem;
-    opacity: 0;
-    transition: opacity .5s ease;
-}
-.projets-box:hover .projets-layer {
-    opacity: 1;
-}
-.projets-layer h4 { font-size: 2.8rem; color: white; font-weight: 700; }
-.projets-layer p { font-size: 1.5rem; margin: .5rem 0 1.5rem; color: #eee; }
-.projets-layer a {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 5rem;
-    height: 5rem;
-    background: var(--main-color-gradient); /* CORRECTION */
-    border-radius: 50%;
-    transition: all .4s ease;
-}
-.projets-layer a:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 2rem var(--main-color-solid);
-}
-.projets-layer a i { font-size: 2.2rem; color: var(--second-bg-color); }
+.projets { background: var(--second-bg-color); }
+.projets-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr)); gap: 3rem; }
+.projets-box { position: relative; border-radius: 2rem; overflow: hidden; display: flex; box-shadow: 0 1rem 3rem rgba(0,0,0,0.2); transform-style: preserve-3d; transform: perspective(1000px); }
+.projets-box img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; transition: transform .5s ease; }
+.projets-box:hover img { transform: scale(1.05); }
+.projets-box .projets-layer { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 2.5rem; opacity: 0; transition: opacity .5s ease; }
+.projets-box:hover .projets-layer { opacity: 1; }
+.projets-layer .project-title-link { text-decoration: none; }
+.projets-layer .project-title-link h4 { font-size: 2.8rem; color: white; font-weight: 700; transition: color .3s ease; }
+.projets-layer .project-title-link:hover h4 { color: var(--main-color-solid); }
+.projets-layer .project-links { display: flex; gap: 1.5rem; margin-top: 1.5rem; }
+.projets-layer .project-links a { display: inline-flex; justify-content: center; align-items: center; width: 5rem; height: 5rem; background: var(--main-color-gradient); border-radius: 50%; transition: all .4s ease; }
+.projets-layer .project-links a:hover { transform: scale(1.1); box-shadow: 0 0 2rem var(--main-color-solid); }
+.projets-layer .project-links a i { font-size: 2.2rem; color: var(--second-bg-color); }
 
 /* 9. SECTION CONTACT */
-.contact { background: var(--bg-color); /* On inverse pour mieux voir les séparateurs */ }
+.contact { background: var(--bg-color); }
 .contact form { max-width: 70rem; margin: 1rem auto; text-align: center; margin-bottom: 3rem; }
 .contact form .input-box { display: flex; justify-content: space-between; flex-wrap: wrap; }
-.contact form .input-box input,
-.contact form textarea {
-    width: 100%;
-    padding: 1.5rem;
-    font-size: 1.6rem;
-    color: var(--text-color);
-    background: var(--second-bg-color); /* On change le fond des inputs */
-    border-radius: .8rem;
-    margin: .7rem 0;
-}
+.contact form .input-box input, .contact form textarea { width: 100%; padding: 1.5rem; font-size: 1.6rem; color: var(--text-color); background: var(--second-bg-color); border-radius: .8rem; margin: .7rem 0; }
 .contact form .input-box input { width: 49%; }
 .contact form textarea { resize: none; }
 
 /* 10. FOOTER */
-.footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    padding: 2rem 9%;
-    background: var(--second-bg-color);
-}
+.footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; padding: 2rem 9%; background: var(--second-bg-color); }
 .footer-text p { font-size: 1.6rem; }
-.footer-iconTop a {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    padding: .8rem;
-    background: var(--main-color-gradient); /* CORRECTION */
-    border-radius: .8rem;
-    transition: .5s ease;
-}
-.footer-iconTop a:hover {
-    box-shadow: 0 0 1rem var(--main-color-solid);
-}
-.footer-iconTop a i { font-size: 2.4rem; color: var(--second-bg-color); }
 
-/* 11. RESPONSIVE DESIGN */
+/* 11. BOUTON RETOUR EN HAUT */
+.back-to-top { position: fixed; bottom: 2.5rem; right: 2.5rem; background: var(--main-color-gradient); color: var(--bg-color); width: 4.5rem; height: 4.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; z-index: 1000; box-shadow: 0 0 1rem var(--main-color-solid); opacity: 0; pointer-events: none; transition: all .4s ease; }
+.back-to-top.active { opacity: 1; pointer-events: auto; bottom: 4rem; }
+.back-to-top:hover { box-shadow: 0 0 2rem var(--main-color-solid); }
+
+/* 12. PAGE DÉTAIL PROJET (CSS AJOUTÉ) */
+.project-detail-page body { background: var(--second-bg-color); }
+.project-detail .project-detail-container { display: flex; flex-wrap: wrap; gap: 5rem; padding-top: 5rem; max-width: 120rem; margin: 0 auto; }
+.project-detail .project-header { flex: 1 1 50rem; }
+.project-detail .project-content { flex: 1 1 60rem; }
+.project-detail h1 { font-size: 4.5rem; color: var(--text-color); margin-bottom: 1rem; line-height: 1.2; }
+.project-detail .tags-container { margin-bottom: 3rem; }
+.project-detail .tag { font-size: 1.2rem; background: var(--main-color-gradient); color: var(--bg-color); padding: 0.5rem 1rem; border-radius: 0.5rem; margin-right: 1rem; display: inline-block; margin-bottom: .5rem; font-weight: 600; }
+.project-detail .project-header img { width: 100%; border-radius: 1.5rem; box-shadow: 0 1rem 3rem rgba(0,0,0,0.3); margin-bottom: 3rem; }
+.project-detail .cta-buttons { display: flex; gap: 2rem; }
+.project-detail .project-content h3 { font-size: 2.8rem; color: var(--main-color-solid); margin-top: 2rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--bg-color); }
+.project-detail .project-content .prose { font-size: 1.6rem; line-height: 1.8; color: #ccc; }
+.project-detail .project-content .prose ul { list-style-position: inside; padding-left: 1.5rem; }
+.project-detail .project-content .prose ul li { margin-bottom: 1rem; }
+.project-detail .project-content .prose strong { color: var(--main-color-solid); font-weight: 700; }
+
+/* 13. RESPONSIVE DESIGN */
 @media (max-width: 1200px) { html { font-size: 55%; } }
-@media (max-width: 991px) {
-    .header { padding: 2rem 3%; }
-    section { padding: 10rem 3% 2rem; }
-    .footer { padding: 2rem 3%; }
-}
+@media (max-width: 991px) { .header, section, .footer { padding-left: 3%; padding-right: 3%; } }
 @media (max-width: 768px) {
     #menu-icon { display: block; }
-    .navbar {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        padding: 1rem 3%;
-        background: var(--bg-color);
-        border-top: .1rem solid rgba(0,0,0,.2);
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
-        display: none;
-    }
+    .navbar { position: absolute; top: 100%; left: 0; width: 100%; padding: 1rem 3%; background: var(--bg-color); border-top: .1rem solid rgba(0,0,0,.2); box-shadow: 0 .5rem 1rem rgba(0,0,0,.2); display: none; }
     .navbar.active { display: block; }
     .navbar a { display: block; font-size: 2rem; margin: 3rem 0; }
     .accueil { flex-direction: column-reverse; text-align: center; }

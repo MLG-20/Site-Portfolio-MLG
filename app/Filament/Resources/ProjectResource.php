@@ -14,6 +14,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 
@@ -54,11 +55,22 @@ class ProjectResource extends Resource
                     ->url()
                     ->placeholder('https://...'),
 
-                Textarea::make('description')
-                    ->label('Description')
-                    ->rows(4)
-                    ->columnSpanFull()
-                    ->required(),
+                // ---- REMPLACE LES TEXTAREA PAR DES RICHEDITOR ----
+RichEditor::make('problematic')
+    ->label('Problématique / Objectif')
+    ->helperText('Quel était le problème à résoudre ?')
+    ->columnSpanFull(),
+
+RichEditor::make('solution')
+    ->label('Ma Solution')
+    ->helperText('Comment as-tu résolu le problème ? Quelles technologies as-tu utilisées ?')
+    ->columnSpanFull(),
+
+RichEditor::make('learnings')
+    ->label('Défis & Apprentissages')
+    ->helperText('Quelle a été la plus grande difficulté ? Qu\'as-tu appris ?')
+    ->columnSpanFull(),
+// ---------------------------------------------
             ]);
     }
 
@@ -69,6 +81,12 @@ class ProjectResource extends Resource
                 ImageColumn::make('image')->circular(),
                 TextColumn::make('title')->sortable()->searchable(),
                 TextColumn::make('tags')->badge(),
+                // ---- AJOUTE CETTE COLONNE ----
+            TextColumn::make('github_link')
+                ->label('GitHub')
+                ->icon('fab-github') // Affiche une icône GitHub
+                ->url(fn (string $state): string => $state) // Rend l'icône cliquable
+                ->openUrlInNewTab(), // Ouvre dans un nouvel onglet
             ])
             ->filters([
                 //

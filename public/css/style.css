@@ -124,3 +124,139 @@ section.accueil { display: flex; justify-content: center; align-items: center; f
     .accueil-img img { width: 70vw; margin-top: 4rem; }
     .projets-container { grid-template-columns: 1fr; }
 }
+
+
+/* --- CORRECTION RESPONSIVE MOBILE --- */
+@media (max-width: 500px) {
+    /* Évite que le texte soit trop gros et sorte de l'écran */
+    html {
+        font-size: 50%; 
+    }
+
+    /* Centre l'image et réduit sa taille */
+    .accueil-img {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 3rem;
+    }
+    .accueil-img img {
+        width: 70vw; /* 70% de la largeur de l'écran */
+        max-width: 300px;
+    }
+
+    /* Centre le texte d'accueil */
+    .accueil-content {
+        text-align: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Corrige les marges latérales pour ne pas coller aux bords */
+    section {
+        padding: 10rem 4% 2rem;
+    }
+}
+
+
+/* --- CONFIGURATION DU FLIPPER INFINI --- */
+
+.metiers-flipper {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 3.2rem;
+    font-weight: 800;
+    color: var(--text-color);
+}
+
+.flipper-wrapper {
+    height: 5rem; /* Hauteur d'une ligne */
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+}
+
+.flipper-container {
+    display: flex;
+    flex-direction: column;
+    /* L'animation fait monter tout le bloc */
+    animation: slideInfinite 12s cubic-bezier(0.85, 0, 0.15, 1) infinite;
+}
+
+.flipper-item {
+    height: 5rem;
+    line-height: 5rem;
+    white-space: nowrap;
+    
+    /* Couleur : Dégradé Bleu Magnifique */
+    background: linear-gradient(to right, #00c6ff, #fff, #0072ff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* EFFET LUMINEUX (NÉON) */
+    filter: drop-shadow(0 0 10px rgba(0, 198, 255, 0.7));
+
+    /* Animation du reflet brillant sur le texte */
+    animation: textShimmer 4s linear infinite;
+}
+
+/* ANIMATION 1 : Le glissement (Pour 3 mots + 1 doublon) */
+@keyframes slideInfinite {
+    0%, 20% { transform: translateY(0); }             /* Mot 1 */
+    25%, 45% { transform: translateY(-5rem); }        /* Mot 2 */
+    50%, 70% { transform: translateY(-10rem); }       /* Mot 3 */
+    75%, 95% { transform: translateY(-15rem); }       /* Doublon du Mot 1 */
+    100% { transform: translateY(-15rem); }           /* Finition du cycle */
+}
+
+/* ANIMATION 2 : Le reflet brillant qui circule */
+@keyframes textShimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* --- ADAPTATION MOBILE (iPhone 6s+) --- */
+@media (max-width: 500px) {
+    .metiers-flipper {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+        font-size: 2.4rem;
+    }
+    .flipper-wrapper {
+        height: 4rem;
+    }
+    .flipper-item {
+        height: 4rem;
+        line-height: 4rem;
+    }
+    @keyframes slideInfinite {
+        0%, 20% { transform: translateY(0); }
+        25%, 45% { transform: translateY(-4rem); }
+        50%, 70% { transform: translateY(-8rem); }
+        75%, 95% { transform: translateY(-12rem); }
+        100% { transform: translateY(-12rem); }
+    }
+}
+
+
+.bio-content {
+    font-size: 1.6rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.bio-content ul {
+    list-style-type: circle;
+    margin-left: 2rem;
+    margin-top: 1rem;
+}
+
+.bio-content strong {
+    color: var(--main-color-solid); /* Ça mettra tes mots importants en bleu lumineux ! */
+    font-weight: 700;
+}

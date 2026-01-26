@@ -36,11 +36,7 @@ class PersonalInfoResource extends Resource
                     ->placeholder('Ajouter un titre')
                     ->separator(','),
                     // ---- AJOUTE CE BLOC DE CODE ICI ----
-                Textarea::make('description')
-                   ->label('Paragraphe d\'accueil (Bio)')
-                   ->rows(5) // Donne un peu plus de hauteur
-                   ->helperText('C\'est le texte qui apparaît sous ton nom sur la page d\'accueil.')
-                   ->columnSpanFull(), // Pour qu'il prenne toute la largeur
+                Textarea::make('description')->rows(5)->columnSpanFull(),
 
                 TextInput::make('email')->email()->required(),
                 TextInput::make('phone')->tel(),

@@ -85,7 +85,7 @@ RichEditor::make('learnings')
             TextColumn::make('github_link')
                 ->label('GitHub')
                 ->icon('fab-github') // Affiche une icône GitHub
-                ->url(fn (string $state): string => $state) // Rend l'icône cliquable
+                ->url(fn (?string $state): ?string => $state) // Rend l'icône cliquable
                 ->openUrlInNewTab(), // Ouvre dans un nouvel onglet
             ])
             ->filters([

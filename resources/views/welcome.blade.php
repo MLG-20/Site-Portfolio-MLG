@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $personalInfo->name }} | Portfolio</title>
 
-    <!-- FAVICON -->
-    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <!-- On ajoute ?v=2 à la fin pour forcer le navigateur à oublier l'ancien logo Laravel -->
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=2">
     
     <!-- META TAGS (SEO & Social) -->
     <meta name="description" content="Découvrez le portfolio de Mamadou Lamine Gueye, Développeur Web et Data Analyst.">
@@ -29,7 +29,6 @@
     </script>
 </head>
 <body>
-
     <!-- HEADER -->
     <header class="header">
         <a href="#" class="logo">Portfolio MLG</a>
@@ -45,10 +44,35 @@
     <!-- SECTION ACCUEIL -->
     <section class="accueil" id="accueil">
         <div class="accueil-content">
-            <h3>Bonjour, je suis</h3>
+            <h3>Bonjour, je suis </h>
             <h1>{{ $personalInfo->name }}</h1>
-            <!-- Dans la section accueil -->
-            <h3>Et je suis <span id="typed-text" class="multiple-text"></span></h3>
+            @php
+    // 1. On s'assure d'avoir un tableau
+    $titles = $personalInfo->titles;
+    if (is_string($titles)) {
+        $decoded = json_decode($titles, true);
+        $titles = is_array($decoded) ? $decoded : explode(',', $titles);
+    }
+    $titles = array_values((array)($titles ?? ["Développeur", "Data Analyst", "Expert BI"]));
+@endphp
+
+<h3 class="metiers-flipper notranslate">
+    Et je suis 
+    <span class="flipper-wrapper">
+        <span class="flipper-container">
+            @foreach($titles as $title)
+                <span class="flipper-item">{{ $title }}</span>
+            @endforeach
+            
+            {{-- LE SECRET DE LA BOUCLE : On répète le tout premier mot à la fin --}}
+            @if(count($titles) > 0)
+                <span class="flipper-item">{{ $titles[0] }}</span>
+            @endif
+        </span>
+    </span>
+</h3>
+
+
             <p>{{ $personalInfo->description }}</p>
             <div class="social-media">
                 <a href="{{ $personalInfo->linkedin }}" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
@@ -138,32 +162,8 @@
     <!-- 1. On charge toutes les librairies externes d'abord -->
     <script src="https://unpkg.com/scrollreveal"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
-    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-
     <!-- 2. Ensuite, on charge ton script principal qui les utilise -->
     <script src="{{ asset('js/main.js') }}"></script>
-     
-    <script>
-// Animation Typed.js - Version propre et fonctionnelle
-document.addEventListener('DOMContentLoaded', function() {
-    const typedElement = document.getElementById('typed-text');
-    if (!typedElement || typeof Typed === 'undefined') return;
-    
-    const titles = @json($personalInfo->titles ?? []);
-    const defaultTitles = ['Développeur Web', 'Data Analyst', 'Freelance'];
-    const titlesToUse = Array.isArray(titles) && titles.length > 0 ? titles : defaultTitles;
-    
-    new Typed('#typed-text', {
-        strings: titlesToUse,
-        typeSpeed: 100,
-        backSpeed: 50,
-        backDelay: 1000,
-        loop: true,
-        showCursor: true,
-        cursorChar: '|'
-    });
-});
-</script>
 
     <!-- Bouton Retour en Haut -->
     <a href="#accueil" class="back-to-top"><i class="fa-solid fa-arrow-up"></i></a>

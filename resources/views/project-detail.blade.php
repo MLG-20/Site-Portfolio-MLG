@@ -1,72 +1,94 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $project->title }} | Projet de {{ $personalInfo->name }}</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<body class="project-detail-page">
+@extends('layouts.app')
 
-    <!-- Un header simplifié pour cette page -->
+@section('meta_title', $project->title . ' | ' . $personalInfo->name)
+@section('meta_description', strip_tags(\Illuminate\Support\Str::limit($project->description ?? '', 160)))
+@section('og_title', $project->title)
+@section('og_description', strip_tags(\Illuminate\Support\Str::limit($project->description ?? '', 200)))
+@section('og_image', Storage::url($project->image))
+@section('body_class', 'project-detail-page')
+
+@push('json_ld')
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "{{ addslashes($project->title) }}",
+    "description": "{{ addslashes(strip_tags($project->description ?? '')) }}",
+    "url": "{{ url()->current() }}"@if($project->github_link),"codeRepository": "{{ $project->github_link }}"@endif@if(!empty($project->tags)),"programmingLanguage": @json($project->tags)@endif
+}
+</script>
+@endpush
+
+@section('header')
     <header class="header sticky">
-        <a href="{{ route('home') }}" class="logo">Retour au Portfolio</a>
+        <a href="{{ route('home') }}" class="logo">
+            <i class="fa-solid fa-arrow-left"></i> Retour au Portfolio
+        </a>
     </header>
+@endsection
+
+@section('content')
 
     <section class="project-detail">
         <div class="project-detail-container">
 
-            <!-- COLONNE DE GAUCHE : VISUELS ET INFOS CLÉS -->
+            <!-- COLONNE GAUCHE : visuels et infos clés -->
             <div class="project-header">
                 <h1>{{ $project->title }}</h1>
-                <div class="tags-container">
-                    @php
-                    // On force la transformation en tableau, quoi qu'il arrive
-                     $tags = is_string($project->tags) ? explode(',', $project->tags) : ($project->tags ?? []);
-                    @endphp
 
-                    @foreach($tags as $tag)
-                        <span class="tag">{{ trim($tag) }}</span>
+                <div class="tags-container">
+                    @foreach($project->tags ?? [] as $tag)
+                        <x-tag :label="trim($tag)" />
                     @endforeach
                 </div>
+
+                <p class="project-views">
+                    <i class="fa-solid fa-eye"></i> {{ $project->views_count }} vue{{ $project->views_count !== 1 ? 's' : '' }}
+                </p>
+
                 <img src="{{ Storage::url($project->image) }}" alt="Image principale du projet {{ $project->title }}">
+
                 <div class="cta-buttons">
                     @if($project->demo_link)
-                        <a href="{{ $project->demo_link }}" class="btn" target="_blank">Voir la Démo</a>
+                        <a href="{{ $project->demo_link }}" class="btn" target="_blank" rel="noopener noreferrer">Voir la Démo</a>
                     @endif
                     @if($project->github_link)
-                        <a href="{{ $project->github_link }}" class="btn" target="_blank">Voir le Code Source</a>
+                        <a href="{{ $project->github_link }}" class="btn" target="_blank" rel="noopener noreferrer">Voir le Code Source</a>
                     @endif
                 </div>
             </div>
 
-            <!-- COLONNE DE DROITE : L'HISTOIRE DU PROJET -->
+            <!-- COLONNE DROITE : l'histoire du projet -->
             <div class="project-content">
-    
-    <!-- Affiche la section Problématique SEULEMENT si elle est remplie -->
-    @if($project->problematic)
-        <h3>Problématique</h3>
-        <div class="prose">{!! $project->problematic !!}</div>
-    @endif
 
-    <!-- Affiche la section Solution SEULEMENT si elle est remplie -->
-    @if($project->solution)
-        <h3>Ma Solution</h3>
-        <div class="prose">{!! $project->solution !!}</div>
-    @endif
+                @if($project->video_path)
+                    <div class="project-video">
+                        <h3>Démonstration</h3>
+                        <video controls preload="metadata" playsinline>
+                            <source src="{{ Storage::url($project->video_path) }}">
+                            Votre navigateur ne supporte pas la lecture vidéo.
+                        </video>
+                    </div>
+                @endif
 
-    <!-- Affiche la section Apprentissages SEULEMENT si elle est remplie -->
-    @if($project->learnings)
-        <h3>Défis & Apprentissages</h3>
-        <div class="prose">{!! $project->learnings !!}</div>
-    @endif
-    
-</div>
+                @if($project->problematic)
+                    <h3>Problématique</h3>
+                    <div class="prose">{!! $project->problematic !!}</div>
+                @endif
+
+                @if($project->solution)
+                    <h3>Ma Solution</h3>
+                    <div class="prose">{!! $project->solution !!}</div>
+                @endif
+
+                @if($project->learnings)
+                    <h3>Défis & Apprentissages</h3>
+                    <div class="prose">{!! $project->learnings !!}</div>
+                @endif
+
+            </div>
 
         </div>
     </section>
 
-</body>
-</html>
+@endsection

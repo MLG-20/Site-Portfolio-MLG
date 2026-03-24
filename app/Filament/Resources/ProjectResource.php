@@ -34,10 +34,19 @@ class ProjectResource extends Resource
                     ->required(),
 
                 FileUpload::make('image')
-                    ->label('Image')
+                    ->label('Image de couverture')
                     ->image()
-                    ->directory('projects') // Dossier de stockage
+                    ->directory('projects')
                     ->required()
+                    ->columnSpanFull(),
+
+                FileUpload::make('video_path')
+                    ->label('Vidéo de démo (MP4, MOV, WebM…)')
+                    ->helperText('Optionnel — vidéo enregistrée depuis ton ordinateur, affichée dans la page du projet.')
+                    ->acceptedFileTypes(['video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo', 'video/avi'])
+                    ->directory('projects/videos')
+                    ->maxSize(20480) // 20 Mo — limite PHP actuelle (upload_max_filesize)
+                    ->nullable()
                     ->columnSpanFull(),
 
                 TagsInput::make('tags')
@@ -81,8 +90,10 @@ RichEditor::make('learnings')
                 ImageColumn::make('image')->circular(),
                 TextColumn::make('title')->sortable()->searchable(),
                 TextColumn::make('tags')->badge(),
-                // ---- AJOUTE CETTE COLONNE ----
-            TextColumn::make('github_link')
+                TextColumn::make('views_count')
+                    ->label('Vues')
+                    ->sortable(),
+                TextColumn::make('github_link')
                 ->label('GitHub')
                 ->icon('fab-github') // Affiche une icône GitHub
                 ->url(fn (?string $state): ?string => $state) // Rend l'icône cliquable

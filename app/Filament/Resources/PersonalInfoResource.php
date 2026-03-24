@@ -35,11 +35,14 @@ class PersonalInfoResource extends Resource
                     ->label('Titres animés (Appuie sur Entrée)')
                     ->placeholder('Ajouter un titre')
                     ->separator(','),
-                    // ---- AJOUTE CE BLOC DE CODE ICI ----
+
                 Textarea::make('description')->rows(5)->columnSpanFull(),
 
                 TextInput::make('email')->email()->required(),
                 TextInput::make('phone')->tel(),
+                TextInput::make('location')
+                    ->label('Localisation')
+                    ->placeholder('Ex: Thiès, Sénégal'),
                 
                 FileUpload::make('profile_image')
                     ->label('Photo de Profil')

@@ -2,72 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\PersonalInfo;
+use App\Http\Requests\StoreMessageRequest;
+use App\Mail\NewContactMessage;
 use App\Models\Experience;
-use App\Models\Project;
 use App\Models\Message;
+use App\Models\PersonalInfo;
+use App\Models\Project;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class PortfolioController extends Controller
 {
     public function index()
     {
-        // CORRECTION : On prend la fiche la plus récente
-        $personalInfo = PersonalInfo::latest()->first(); 
-        
-        $experiences = Experience::all();
-        $projects = Project::orderBy('created_at', 'desc')->get();
+        $personalInfo = Cache::remember('personal_info', now()->addHours(24), function () {
+            return PersonalInfo::latest()->first() ?? new PersonalInfo();
+        });
 
-        return view('welcome', compact('personalInfo', 'experiences', 'projects'));
+        $experiences = Cache::remember('experiences', now()->addHours(24), function () {
+            return Experience::all();
+        });
+
+        $projects = Cache::remember('projects', now()->addHours(24), function () {
+            return Project::latest()->get();
+        });
+
+        $allTags = $projects->flatMap(fn($p) => $p->tags ?? [])->unique()->sort()->values();
+
+        return view('welcome', compact('personalInfo', 'experiences', 'projects', 'allTags'));
     }
 
-    public function storeMessage(Request $request)
+    public function storeMessage(StoreMessageRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:100',
-            'email' => 'required|email',
-            'phone' => 'nullable',
-            'subject' => 'required',
-            'message' => 'required'
-        ]);
-
-        $message = Message::create($validated);
+        $contactMessage = Message::create($request->validated());
 
         try {
-            $adminEmail = 'mlamine.gueye1@univ-thies.sn';
+            $adminEmail = config('portfolio.admin_email');
             if ($adminEmail) {
-                // VOICI LA CORRECTION : On ajoute l'Email et le Téléphone dans le corps du texte
-                Mail::raw(
-                    "👤 Nouveau contact de : {$message->name}\n" .
-                    "📧 Email : {$message->email}\n" .
-                    "📞 Téléphone : {$message->phone}\n\n" .
-                    "📝 Sujet : {$message->subject}\n" .
-                    "--------------------------------------------------\n\n" .
-                    "Message :\n{$message->message}",
-                    
-                    function ($mail) use ($adminEmail) {
-                        $mail->to($adminEmail)->subject('Nouveau message Portfolio');
-                    }
-                );
+                Mail::to($adminEmail)->send(new NewContactMessage($contactMessage));
             }
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+            Log::error('Échec envoi email contact : ' . $e->getMessage());
+        }
 
-        return redirect()->route('home', '#contact')->with('success', 'Message envoyé !');
+        return redirect()->to(route('home') . '#contact')->with('success', 'Message envoyé !');
     }
 
     public function showProject(Project $project)
     {
-        // CORRECTION : On prend aussi la plus récente ici
-        $personalInfo = PersonalInfo::latest()->first(); 
-        
+        $personalInfo = Cache::remember('personal_info', now()->addHours(24), function () {
+            return PersonalInfo::latest()->first() ?? new PersonalInfo();
+        });
+
+        // Compteur de vues : une seule vue par visiteur par 24h (cookie)
+        $cookieName = 'viewed_project_' . $project->id;
+        if (!request()->cookie($cookieName)) {
+            $project->incrementQuietly('views_count');
+            cookie()->queue(cookie($cookieName, 1, 60 * 24));
+        }
+
         return view('project-detail', compact('project', 'personalInfo'));
     }
 }
-
-
-
-
-
-
-

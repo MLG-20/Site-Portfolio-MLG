@@ -14,7 +14,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TagsInput;
-use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 
@@ -51,8 +51,7 @@ class ProjectResource extends Resource
 
                 TagsInput::make('tags')
                     ->label('Technologies (Appuie sur Entrée)')
-                    ->placeholder('Laravel, PowerBI...')
-                    ->separator(','), // Important pour le JSON
+                    ->placeholder('Laravel, PowerBI...'),
 
                 TextInput::make('demo_link')
                     ->label('Lien Démo (URL)')
@@ -64,22 +63,20 @@ class ProjectResource extends Resource
                     ->url()
                     ->placeholder('https://...'),
 
-                // ---- REMPLACE LES TEXTAREA PAR DES RICHEDITOR ----
-RichEditor::make('problematic')
-    ->label('Problématique / Objectif')
-    ->helperText('Quel était le problème à résoudre ?')
-    ->columnSpanFull(),
+                MarkdownEditor::make('problematic')
+                    ->label('Problématique / Objectif')
+                    ->helperText('Quel était le problème à résoudre ?')
+                    ->columnSpanFull(),
 
-RichEditor::make('solution')
-    ->label('Ma Solution')
-    ->helperText('Comment as-tu résolu le problème ? Quelles technologies as-tu utilisées ?')
-    ->columnSpanFull(),
+                MarkdownEditor::make('solution')
+                    ->label('Ma Solution')
+                    ->helperText('Comment as-tu résolu le problème ? Quelles technologies as-tu utilisées ?')
+                    ->columnSpanFull(),
 
-RichEditor::make('learnings')
-    ->label('Défis & Apprentissages')
-    ->helperText('Quelle a été la plus grande difficulté ? Qu\'as-tu appris ?')
-    ->columnSpanFull(),
-// ---------------------------------------------
+                MarkdownEditor::make('learnings')
+                    ->label('Défis & Apprentissages')
+                    ->helperText('Quelle a été la plus grande difficulté ? Qu\'as-tu appris ?')
+                    ->columnSpanFull(),
             ]);
     }
 

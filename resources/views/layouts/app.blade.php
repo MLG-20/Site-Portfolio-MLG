@@ -119,7 +119,6 @@
     <a href="#" class="back-to-top"><i class="fa-solid fa-arrow-up"></i></a>
 
     <script src="https://unpkg.com/scrollreveal"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
     <script src="{{ asset('js/main.js') }}"></script>
 
     @stack('scripts')

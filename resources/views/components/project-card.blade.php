@@ -1,6 +1,6 @@
 @props(['project'])
 
-<div class="projets-box" data-tags="{{ implode(',', $project->tags ?? []) }}">
+<div class="projets-box" data-tags="{{ implode(',', is_array($project->tags) ? $project->tags : []) }}">
     <img src="{{ Storage::url($project->image) }}" alt="{{ $project->title }}" loading="lazy">
     <div class="projets-layer">
         <a href="{{ route('projects.show', $project) }}" class="project-title-link">

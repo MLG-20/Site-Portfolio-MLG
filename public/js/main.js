@@ -161,13 +161,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 visibleCount += PAGE_SIZE;
                 renderProjects();
 
-                // Init VanillaTilt sur les cartes nouvellement visibles (desktop)
-                if (typeof VanillaTilt !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
-                    const newCards = document.querySelectorAll('.projets-box:not([data-tilt])');
-                    if (newCards.length) {
-                        VanillaTilt.init(newCards, { max: 15, speed: 400, glare: true, 'max-glare': 0.3 });
-                    }
-                }
             });
         }
     }
@@ -217,16 +210,5 @@ document.addEventListener('DOMContentLoaded', function () {
         sr.reveal('.experience-container, .projets-container', { origin: 'bottom' });
     }
 
-    // -------------------------------------------------------
-    // 7. VANILLA TILT — cartes projet (desktop uniquement)
-    // -------------------------------------------------------
-    if (typeof VanillaTilt !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
-        VanillaTilt.init(document.querySelectorAll('.projets-box'), {
-            max: 15,
-            speed: 400,
-            glare: true,
-            'max-glare': 0.3,
-        });
-    }
 
 });

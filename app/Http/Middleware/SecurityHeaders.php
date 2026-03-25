@@ -17,6 +17,10 @@ class SecurityHeaders
     {
         $response = $next($request);
 
+        if ($request->is('admin*')) {
+            return $response;
+        }
+
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
         $response->headers->set('X-XSS-Protection', '1; mode=block');

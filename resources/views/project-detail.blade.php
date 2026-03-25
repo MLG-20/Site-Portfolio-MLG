@@ -10,7 +10,7 @@
 @push('json_ld')
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
+    "@@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
     "name": "{{ addslashes($project->title) }}",
     "description": "{{ addslashes(strip_tags($project->description ?? '')) }}",
@@ -37,7 +37,7 @@
                 <h1>{{ $project->title }}</h1>
 
                 <div class="tags-container">
-                    @foreach($project->tags ?? [] as $tag)
+                    @foreach(is_array($project->tags) ? $project->tags : [] as $tag)
                         <x-tag :label="trim($tag)" />
                     @endforeach
                 </div>

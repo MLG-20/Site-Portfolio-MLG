@@ -7,12 +7,21 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Node.js pour compiler les assets
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
 WORKDIR /var/www/html
 
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts
 
+COPY package*.json ./
+RUN npm ci
+
 COPY . .
+
+RUN npm run build
 
 RUN composer dump-autoload --optimize
 

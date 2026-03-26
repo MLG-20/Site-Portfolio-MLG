@@ -17,7 +17,7 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts
 
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY . .
 

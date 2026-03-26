@@ -31,7 +31,7 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 # On ne génère pas de clé ici si tu l'as déjà mise dans les variables Railway
 # Mais on garde la structure pour la sécurité
-RUN php artisan key:generate --force
+
 
 # Railway ignore EXPOSE, il utilise sa propre configuration de port
 EXPOSE 80

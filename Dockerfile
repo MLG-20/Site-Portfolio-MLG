@@ -3,7 +3,8 @@ FROM php:8.4-apache
 RUN apt-get update && apt-get install -y \
     libzip-dev zip unzip git curl \
     && docker-php-ext-install pdo pdo_mysql zip \
-    && a2enmod rewrite
+    && a2dismod mpm_event mpm_worker 2>/dev/null || true \
+    && a2enmod mpm_prefork rewrite
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

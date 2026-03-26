@@ -29,3 +29,5 @@ COPY .env.example .env
 RUN php artisan key:generate --force
 
 EXPOSE 80
+
+CMD ["apache2-foreground"]

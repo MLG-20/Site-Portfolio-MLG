@@ -1,7 +1,8 @@
 FROM php:8.4-cli
 
 RUN apt-get update && apt-get install -y \
-    libzip-dev libonig-dev zip unzip git curl \
+    libzip-dev libonig-dev libicu-dev zip unzip git curl \
+    && docker-php-ext-configure intl \
     && docker-php-ext-install pdo pdo_mysql zip mbstring intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 

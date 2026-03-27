@@ -40,8 +40,24 @@ class PersonalInfo extends Model
 
     public function setTitlesAttribute(mixed $value): void
     {
-        $this->attributes['titles'] = is_array($value)
-            ? json_encode($value, JSON_UNESCAPED_UNICODE)
-            : $value;
+        if (is_array($value)) {
+            $this->attributes['titles'] = json_encode($value, JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        if (is_string($value) && !empty($value)) {
+            // Déjà du JSON valide → stocker tel quel
+            $decoded = json_decode($value, true);
+            if (is_array($decoded)) {
+                $this->attributes['titles'] = $value;
+                return;
+            }
+            // String brute ou CSV (ex: Filament avec ->separator(',')) → encoder
+            $items = array_values(array_filter(array_map('trim', explode(',', $value))));
+            $this->attributes['titles'] = json_encode($items, JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        $this->attributes['titles'] = null;
     }
 }

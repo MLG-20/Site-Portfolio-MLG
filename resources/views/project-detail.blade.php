@@ -14,7 +14,13 @@
     "@type": "SoftwareSourceCode",
     "name": "{{ addslashes($project->title) }}",
     "description": "{{ addslashes(strip_tags($project->description ?? '')) }}",
-    "url": "{{ url()->current() }}"@if($project->github_link),"codeRepository": "{{ $project->github_link }}"@endif@if(!empty($project->tags)),"programmingLanguage": @json($project->tags)@endif
+    "url": "{{ url()->current() }}"
+    @if($project->github_link)
+    ,"codeRepository": "{{ $project->github_link }}"
+    @endif
+    @if(!empty($project->tags))
+    ,"programmingLanguage": {{ json_encode($project->tags) }}
+    @endif
 }
 </script>
 @endpush

@@ -142,7 +142,7 @@ section.accueil { display: flex; justify-content: center; align-items: center; f
    9. SECTION EXPÉRIENCE
    ========================================================= */
 .experience { background: var(--second-bg-color); }
-.experience-container { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 2rem; }
+.experience-container { display: flex; justify-content: center; align-items: stretch; flex-wrap: wrap; gap: 2rem; }
 .experience-box { flex: 1 1 30rem; background: var(--bg-color); padding: 3rem 2rem 4rem; border-radius: 2rem; text-align: center; border: .2rem solid var(--bg-color); transition: .5s ease; }
 .experience-box:hover { border-color: var(--main-color-solid); transform: scale(1.02); }
 .experience-box i { font-size: 7rem; background: var(--main-color-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }

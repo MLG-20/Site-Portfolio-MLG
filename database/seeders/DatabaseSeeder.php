@@ -22,11 +22,12 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Infos personnelles (ne crée que si vide)
+        // Infos personnelles — recrée toujours pour corriger les données invalides
+        PersonalInfo::truncate();
         if (PersonalInfo::count() === 0) {
             PersonalInfo::create([
                 'name'          => 'Mamadou Lamine Gueye',
-                'titles'        => json_encode(['Développeur Full-Stack', 'Data Analyst', 'Expert Power BI']),
+                'titles'        => ['Développeur Full-Stack', 'Data Analyst', 'Expert Power BI'],
                 'email'         => 'contact@laminegueye.dev',
                 'phone'         => '+221 77 123 45 67',
                 'linkedin'      => 'https://linkedin.com',

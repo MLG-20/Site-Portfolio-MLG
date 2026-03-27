@@ -16,9 +16,7 @@ class PortfolioController extends Controller
 {
     public function index()
     {
-        $personalInfo = Cache::remember('personal_info', now()->addHours(24), function () {
-            return PersonalInfo::latest()->first() ?? new PersonalInfo();
-        });
+        $personalInfo = $this->getPersonalInfo();
 
         $experiences = Cache::remember('experiences', now()->addHours(24), function () {
             return Experience::all();
@@ -49,11 +47,21 @@ class PortfolioController extends Controller
         return redirect()->to(route('home') . '#contact')->with('success', 'Message envoyé !');
     }
 
+    private function getPersonalInfo(): PersonalInfo
+    {
+        $attrs = Cache::remember('personal_info', now()->addHours(24), function () {
+            return (PersonalInfo::latest()->first() ?? new PersonalInfo())->getAttributes();
+        });
+
+        $model = new PersonalInfo();
+        $model->setRawAttributes($attrs);
+
+        return $model;
+    }
+
     public function showProject(Project $project)
     {
-        $personalInfo = Cache::remember('personal_info', now()->addHours(24), function () {
-            return PersonalInfo::latest()->first() ?? new PersonalInfo();
-        });
+        $personalInfo = $this->getPersonalInfo();
 
         // Compteur de vues : une seule vue par visiteur par 24h (cookie)
         $cookieName = 'viewed_project_' . $project->id;

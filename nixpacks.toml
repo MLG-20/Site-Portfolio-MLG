@@ -5,4 +5,4 @@ nixPkgs = ["php84", "php84Extensions.intl", "php84Extensions.zip", "php84Extensi
 cmds = ["composer install --optimize-autoloader --no-scripts --no-interaction"]
 
 [start]
-cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
+cmd = "php -d upload_max_filesize=64M -d post_max_size=64M -d memory_limit=256M -d max_execution_time=120 artisan serve --host=0.0.0.0 --port=$PORT"

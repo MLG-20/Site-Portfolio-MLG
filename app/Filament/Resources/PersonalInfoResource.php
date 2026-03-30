@@ -14,7 +14,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TagsInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 
 class PersonalInfoResource extends Resource
 {
@@ -36,7 +36,10 @@ class PersonalInfoResource extends Resource
                     ->placeholder('Ajouter un titre')
                     ->separator(','),
 
-                Textarea::make('description')->rows(5)->columnSpanFull(),
+                RichEditor::make('description')
+                    ->label('Description')
+                    ->toolbarButtons(['bold', 'italic', 'underline', 'link', 'bulletList', 'orderedList'])
+                    ->columnSpanFull(),
 
                 TextInput::make('email')->email()->required(),
                 TextInput::make('phone')->tel(),

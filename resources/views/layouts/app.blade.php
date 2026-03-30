@@ -10,7 +10,7 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="@yield('og_title', ($personalInfo->name ?? '') . ' | Portfolio')">
-    <meta property="og:description" content="@yield('og_description', $personalInfo->description ?? '')">
+    <meta property="og:description" content="@yield('og_description', strip_tags($personalInfo->description ?? ''))">
     <meta property="og:image" content="@yield('og_image', asset('images/image-de-partage.jpg'))">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">

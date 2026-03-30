@@ -26,7 +26,7 @@
                 </span>
             </h3>
 
-            <p>{{ $personalInfo->description }}</p>
+            <div class="description">{!! $personalInfo->description !!}</div>
 
             <div class="social-media">
                 <a href="{{ $personalInfo->linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="Profil LinkedIn de {{ $personalInfo->name }}">

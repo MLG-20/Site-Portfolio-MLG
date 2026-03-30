@@ -380,88 +380,45 @@ section.accueil { display: flex; justify-content: center; align-items: center; f
 /* =========================================================
    12. FOOTER
    ========================================================= */
-.footer { background: var(--second-bg-color); padding: 6rem 9% 0; }
+.footer { background: var(--second-bg-color); padding: 2.5rem 9%; }
 
-.footer-container {
+.footer-simple {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    gap: 4rem;
     flex-wrap: wrap;
-    padding-bottom: 4rem;
-    border-bottom: .1rem solid rgba(128,128,128,0.2);
+    gap: 1.5rem;
 }
 
-/* Colonne identité */
-.footer-brand { flex: 1 1 25rem; }
-.footer-brand h3 {
-    font-size: 2.4rem;
+.footer-name {
+    font-size: 1.8rem;
     font-weight: 700;
     background: var(--main-color-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 1.2rem;
-}
-.footer-brand p {
-    font-size: 1.4rem;
-    line-height: 1.8;
-    color: var(--text-color);
-    opacity: .75;
-    max-width: 28rem;
 }
 
-/* Colonne navigation */
-.footer-nav { flex: 0 1 15rem; }
-.footer-nav h4, .footer-social h4 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--main-color-solid);
-    margin-bottom: 1.8rem;
-    text-transform: uppercase;
-    letter-spacing: .1rem;
-}
-.footer-nav ul { list-style: none; }
-.footer-nav ul li { margin-bottom: 1rem; }
-.footer-nav ul li a {
-    font-size: 1.5rem;
-    color: var(--text-color);
-    opacity: .75;
-    transition: all .3s ease;
-}
-.footer-nav ul li a:hover {
-    opacity: 1;
-    color: var(--main-color-solid);
-    padding-left: .5rem;
-}
-
-/* Colonne réseaux sociaux */
-.footer-social { flex: 0 1 18rem; }
-.footer-social-icons { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.footer-social-icons { display: flex; gap: 1.2rem; }
 .footer-social-icons a {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 4.2rem;
-    height: 4.2rem;
+    width: 3.8rem;
+    height: 3.8rem;
     border-radius: 50%;
     border: .2rem solid var(--main-color-solid);
     color: var(--main-color-solid);
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     transition: all .3s ease;
 }
 .footer-social-icons a:hover {
     background: var(--main-color-gradient);
     color: #fff;
-    border-color: transparent;
-    transform: translateY(-3px);
+    border-color: var(--main-color-solid);
 }
 
-/* Barre du bas */
-.footer-bottom {
-    text-align: center;
-    padding: 2rem 0;
-}
-.footer-bottom p { font-size: 1.4rem; opacity: .6; }
+.footer-copy { font-size: 1.3rem; opacity: .55; }
 
 /* =========================================================
    13. BOUTONS FLOTTANTS CONTACT
@@ -579,11 +536,8 @@ body.project-detail-page { background: var(--second-bg-color); }
     .input-group { width: 100%; }
 
     /* ---- Footer ---- */
-    .footer { padding: 4rem 4% 0; }
-    .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 3rem; }
-    .footer-brand p { max-width: 100%; }
-    .footer-social-icons { justify-content: center; }
-    .footer-nav ul li a:hover { padding-left: 0; }
+    .footer { padding: 2rem 4%; }
+    .footer-simple { flex-direction: column; align-items: center; text-align: center; gap: 1.2rem; }
 
     /* ---- Page détail projet ---- */
     .project-detail .project-detail-container { flex-direction: column; gap: 3rem; }
@@ -629,9 +583,6 @@ body.project-detail-page { background: var(--second-bg-color); }
     /* ---- Bouton retour en haut ---- */
     .back-to-top { width: 4rem; height: 4rem; font-size: 1.8rem; right: 1.5rem; }
 
-    /* ---- Footer ---- */
-    .footer-brand h3 { font-size: 2rem; }
-    .footer-bottom p { font-size: 1.3rem; }
 
     /* ---- Page détail projet ---- */
     .project-detail h1 { font-size: 2.8rem; }

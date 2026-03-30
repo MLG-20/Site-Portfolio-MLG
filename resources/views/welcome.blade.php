@@ -64,23 +64,63 @@
                     @endif
                     <p><strong>{{ $exp->duration }}</strong></p>
                     <p>{{ $exp->description }}</p>
+                    @if($exp->certificate_path)
+                        @php
+                            $isDiplome = $exp->document_type === 'diplome';
+                            $btnLabel  = $isDiplome ? 'Voir le diplôme' : 'Voir le certificat';
+                            $btnIcon   = $isDiplome ? 'fa-solid fa-graduation-cap' : 'fa-solid fa-award';
+                        @endphp
+                        <button
+                            class="btn-certificate"
+                            data-certificate="{{ Storage::url($exp->certificate_path) }}"
+                            data-title="{{ $exp->title }}"
+                            data-type="{{ str_ends_with(strtolower($exp->certificate_path), '.pdf') ? 'pdf' : 'image' }}"
+                            aria-label="{{ $btnLabel }} de {{ $exp->title }}">
+                            <i class="{{ $btnIcon }}"></i> {{ $btnLabel }}
+                        </button>
+                    @endif
                 </div>
             @endforeach
+
+            <!-- MODAL CERTIFICAT -->
+            <div class="certificate-modal" id="certificate-modal" role="dialog" aria-modal="true" aria-hidden="true">
+                <div class="certificate-modal-overlay" id="certificate-overlay"></div>
+                <div class="certificate-modal-content">
+                    <button class="certificate-modal-close" id="certificate-close" aria-label="Fermer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <h3 class="certificate-modal-title" id="certificate-modal-title"></h3>
+                    <img src="" alt="Certificat" id="certificate-img" class="certificate-modal-img">
+                    <embed src="" id="certificate-pdf" class="certificate-modal-pdf" type="application/pdf">
+                </div>
+            </div>
         </div>
     </section>
+
+    <!-- SECTION TECHNOLOGIES -->
+    @if($technologies->isNotEmpty())
+    <section class="technologies" id="technologies">
+        <h2 class="titre-section">Mes <span>Technologies</span></h2>
+
+        @foreach($technologies as $category => $techs)
+            <div class="technologies-group">
+                <h3 class="technologies-category">{{ $category }}</h3>
+                <div class="technologies-grid">
+                    @foreach($techs as $tech)
+                        <div class="technologies-item">
+                            <img src="{{ $tech->icon_url }}" alt="{{ $tech->name }}" loading="lazy">
+                            <span>{{ $tech->name }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endforeach
+    </section>
+    @endif
 
     <!-- SECTION PROJETS -->
     <section class="projets" id="projets">
         <h2 class="titre-section">Mes <span>Projets</span></h2>
-
-        @if($allTags->isNotEmpty())
-        <div class="projets-filtres" aria-label="Filtrer les projets par technologie">
-            <button class="filtre-btn active" data-filtre="tous">Tous</button>
-            @foreach($allTags as $tag)
-                <button class="filtre-btn" data-filtre="{{ strtolower(preg_replace('/\s+/', '-', $tag)) }}" data-label="{{ $tag }}">{{ $tag }}</button>
-            @endforeach
-        </div>
-        @endif
 
         <div class="projets-container">
             @foreach($projects as $projet)

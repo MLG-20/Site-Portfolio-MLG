@@ -80,6 +80,7 @@
             <nav class="navbar">
                 <a href="{{ route('home') }}#accueil" class="active">Accueil</a>
                 <a href="{{ route('home') }}#experience">Expérience</a>
+                <a href="{{ route('home') }}#technologies">Technologies</a>
                 <a href="{{ route('home') }}#projets">Projets</a>
                 <a href="{{ route('home') }}#contact">Contact</a>
             </nav>
@@ -89,8 +90,58 @@
     @yield('content')
 
     <footer class="footer">
-        <div class="footer-text">
-            <p>Copyright &copy; {{ date('Y') }} {{ $personalInfo->name ?? 'Portfolio' }} | Tous droits réservés.</p>
+        <div class="footer-container">
+
+            <!-- Colonne 1 : identité -->
+            <div class="footer-brand">
+                <h3>{{ $personalInfo->name ?? 'Portfolio' }}</h3>
+                <p>{{ $personalInfo->description ?? '' }}</p>
+            </div>
+
+            <!-- Colonne 2 : navigation -->
+            <div class="footer-nav">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="{{ route('home') }}#accueil">Accueil</a></li>
+                    <li><a href="{{ route('home') }}#experience">Expérience</a></li>
+                    <li><a href="{{ route('home') }}#technologies">Technologies</a></li>
+                    <li><a href="{{ route('home') }}#projets">Projets</a></li>
+                    <li><a href="{{ route('home') }}#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Colonne 3 : réseaux sociaux -->
+            <div class="footer-social">
+                <h4>Me retrouver</h4>
+                <div class="footer-social-icons">
+                    @if(!empty($personalInfo->linkedin))
+                    <a href="{{ $personalInfo->linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    @endif
+                    @if(!empty($personalInfo->github))
+                    <a href="{{ $personalInfo->github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    @endif
+                    @if(!empty($personalInfo->email))
+                    <a href="https://mail.google.com/mail/u/0/?view=cm&fs=1&to={{ $personalInfo->email }}" target="_blank" rel="noopener noreferrer" aria-label="Email">
+                        <i class="fa-solid fa-envelope"></i>
+                    </a>
+                    @endif
+                    @if(!empty($personalInfo->phone))
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $personalInfo->phone) }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                    @endif
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Barre du bas -->
+        <div class="footer-bottom">
+            <p>&copy; {{ date('Y') }} {{ $personalInfo->name ?? 'Portfolio' }} — Tous droits réservés.</p>
         </div>
     </footer>
 

@@ -195,7 +195,57 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------------------------------
-    // 6. SCROLL REVEAL (animations d'entrée)
+    // 6. MODAL CERTIFICAT
+    // -------------------------------------------------------
+    const modal        = document.getElementById('certificate-modal');
+    const modalImg     = document.getElementById('certificate-img');
+    const modalPdf     = document.getElementById('certificate-pdf');
+    const modalTitle   = document.getElementById('certificate-modal-title');
+    const modalClose   = document.getElementById('certificate-close');
+    const modalOverlay = document.getElementById('certificate-overlay');
+
+    function openCertificate(url, title, type) {
+        modalTitle.textContent = title;
+        if (type === 'pdf') {
+            modalPdf.src = url;
+            modalPdf.style.display = 'block';
+            modalImg.style.display = 'none';
+        } else {
+            modalImg.src = url;
+            modalImg.alt = title;
+            modalImg.style.display = 'block';
+            modalPdf.style.display = 'none';
+        }
+        modal.setAttribute('aria-hidden', 'false');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCertificate() {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        modalImg.src = '';
+        modalPdf.src = '';
+    }
+
+    if (modal) {
+        document.querySelectorAll('.btn-certificate').forEach(btn => {
+            btn.addEventListener('click', () => {
+                openCertificate(btn.dataset.certificate, btn.dataset.title, btn.dataset.type);
+            });
+        });
+
+        modalClose.addEventListener('click', closeCertificate);
+        modalOverlay.addEventListener('click', closeCertificate);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeCertificate();
+        });
+    }
+
+    // -------------------------------------------------------
+    // 7. SCROLL REVEAL (animations d'entrée)
     // -------------------------------------------------------
     if (typeof ScrollReveal !== 'undefined') {
         const sr = ScrollReveal({

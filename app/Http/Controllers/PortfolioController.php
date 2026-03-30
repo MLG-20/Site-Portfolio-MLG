@@ -8,6 +8,7 @@ use App\Models\Experience;
 use App\Models\Message;
 use App\Models\PersonalInfo;
 use App\Models\Project;
+use App\Models\Technology;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -26,9 +27,9 @@ class PortfolioController extends Controller
             return Project::latest()->get();
         });
 
-        $allTags = $projects->flatMap(fn($p) => $p->tags ?? [])->unique()->sort()->values();
+        $technologies = Technology::forPortfolio();
 
-        return view('welcome', compact('personalInfo', 'experiences', 'projects', 'allTags'));
+        return view('welcome', compact('personalInfo', 'experiences', 'projects', 'technologies'));
     }
 
     public function storeMessage(StoreMessageRequest $request)

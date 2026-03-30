@@ -47,6 +47,23 @@ class ExperienceResource extends Resource
                     ->rows(3)
                     ->required()
                     ->columnSpanFull(),
+
+                Forms\Components\FileUpload::make('certificate_path')
+                    ->label('Diplôme / Certificat')
+                    ->helperText('Image (JPG, PNG) ou PDF — s\'affiche en popup sur le portfolio')
+                    ->image()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'application/pdf'])
+                    ->directory('certificates')
+                    ->columnSpanFull(),
+
+                Forms\Components\Select::make('document_type')
+                    ->label('Type de document')
+                    ->options([
+                        'certificat' => 'Certificat',
+                        'diplome'    => 'Diplôme',
+                    ])
+                    ->default('certificat')
+                    ->required(),
             ]);
     }
 
@@ -57,6 +74,11 @@ class ExperienceResource extends Resource
                 TextColumn::make('title')->label('Poste')->searchable()->sortable(),
                 TextColumn::make('company')->label('Structure'),
                 TextColumn::make('duration')->label('Date'),
+                Tables\Columns\IconColumn::make('certificate_path')
+                    ->label('Certificat')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-document-check')
+                    ->falseIcon('heroicon-o-minus'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

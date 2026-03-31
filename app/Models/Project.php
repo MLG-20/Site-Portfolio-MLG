@@ -14,7 +14,8 @@ class Project extends Model
     // C'EST ICI LA SOLUTION MAGIQUE :
     // On dit à Laravel : "Transforme automatiquement la colonne 'tags' en tableau PHP"
     protected $casts = [
-        'tags'        => 'array',
-        'views_count' => 'integer',
+        'tags'           => 'array',
+        'views_count'    => 'integer',
+        'gallery_images' => 'array',
     ];
 }

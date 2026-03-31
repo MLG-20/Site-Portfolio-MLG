@@ -40,6 +40,16 @@ class ProjectResource extends Resource
                     ->required()
                     ->columnSpanFull(),
 
+                FileUpload::make('gallery_images')
+                    ->label('Images de galerie (slider)')
+                    ->helperText('Optionnel — ces images s\'affichent dans le slider avec l\'image principale.')
+                    ->image()
+                    ->multiple()
+                    ->reorderable()
+                    ->directory('projects/gallery')
+                    ->nullable()
+                    ->columnSpanFull(),
+
                 FileUpload::make('video_path')
                     ->label('Vidéo de démo (MP4, MOV, WebM…)')
                     ->helperText('Optionnel — vidéo enregistrée depuis ton ordinateur, affichée dans la page du projet.')

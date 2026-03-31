@@ -1,5 +1,30 @@
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css">
+<style>
+.project-slider .splide__slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+.project-slider .splide__track {
+    border-radius: 12px;
+}
+.project-slider .splide__pagination__page.is-active {
+    background: var(--main-color, #00d4ff);
+}
+.project-slider .splide__arrow {
+    background: rgba(0,0,0,0.5);
+}
+.project-slider .splide__arrow svg {
+    fill: #fff;
+}
+</style>
+@endpush
+
 @section('meta_title', $project->title . ' | ' . $personalInfo->name)
 @section('meta_description', strip_tags(\Illuminate\Support\Str::limit($project->description ?? '', 160)))
 @section('og_title', $project->title)
@@ -52,7 +77,26 @@
                     <i class="fa-solid fa-eye"></i> {{ $project->views_count }} vue{{ $project->views_count !== 1 ? 's' : '' }}
                 </p>
 
-                <img src="{{ Storage::url($project->image) }}" alt="Image principale du projet {{ $project->title }}">
+                @php $galleryImages = $project->gallery_images ?? []; @endphp
+
+                @if(count($galleryImages) > 0)
+                    <div class="splide project-slider" aria-label="Galerie du projet {{ $project->title }}">
+                        <div class="splide__track">
+                            <ul class="splide__list">
+                                <li class="splide__slide">
+                                    <img src="{{ Storage::url($project->image) }}" alt="Image principale du projet {{ $project->title }}">
+                                </li>
+                                @foreach($galleryImages as $img)
+                                    <li class="splide__slide">
+                                        <img src="{{ Storage::url($img) }}" alt="Image galerie {{ $project->title }}">
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @else
+                    <img src="{{ Storage::url($project->image) }}" alt="Image principale du projet {{ $project->title }}">
+                @endif
 
                 <div class="cta-buttons">
                     @if($project->demo_link)
@@ -98,3 +142,20 @@
     </section>
 
 @endsection
+
+@push('scripts')
+@php $hasGallery = count($project->gallery_images ?? []) > 0; @endphp
+@if($hasGallery)
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js"></script>
+<script>
+    new Splide('.project-slider', {
+        type: 'loop',
+        perPage: 1,
+        autoplay: false,
+        pagination: true,
+        arrows: true,
+        gap: '1rem',
+    }).mount();
+</script>
+@endif
+@endpush

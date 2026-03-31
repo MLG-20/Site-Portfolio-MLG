@@ -122,11 +122,23 @@
     <section class="projets" id="projets">
         <h2 class="titre-section">Mes <span>Projets</span></h2>
 
-        <div class="projets-container">
-            @foreach($projects as $projet)
-                <x-project-card :project="$projet" />
-            @endforeach
-        </div>
+        @if($apps->isNotEmpty())
+            <h3 class="projets-sous-titre">Applications & <span>Web</span></h3>
+            <div class="projets-container">
+                @foreach($apps as $projet)
+                    <x-project-card :project="$projet" />
+                @endforeach
+            </div>
+        @endif
+
+        @if($dataProjects->isNotEmpty())
+            <h3 class="projets-sous-titre projets-sous-titre--data">Analyse de <span>Données</span></h3>
+            <div class="projets-container">
+                @foreach($dataProjects as $projet)
+                    <x-project-card :project="$projet" />
+                @endforeach
+            </div>
+        @endif
 
         <div class="projets-voir-plus">
             <button id="voir-plus-btn" class="btn">Voir plus</button>

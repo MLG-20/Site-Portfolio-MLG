@@ -335,6 +335,9 @@ section.accueil { display: flex; justify-content: center; align-items: center; f
 .projets { background: var(--second-bg-color); }
 
 .projets-box.hidden { display: none; }
+.projets-sous-titre { font-size: 2.8rem; color: var(--text-color); margin-bottom: 3rem; margin-top: 1rem; padding-left: 1rem; border-left: 4px solid var(--main-color-solid); }
+.projets-sous-titre span { background: var(--main-color-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.projets-sous-titre--data { margin-top: 6rem; }
 .projets-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr)); gap: 3rem; }
 .projets-box { position: relative; border-radius: 2rem; overflow: hidden; display: flex; box-shadow: 0 1rem 3rem rgba(0,0,0,0.2); transition: transform .3s ease, box-shadow .3s ease; }
 .projets-box:hover { transform: translateY(-6px); box-shadow: 0 1.5rem 4rem rgba(0,0,0,0.35); }

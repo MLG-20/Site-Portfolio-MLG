@@ -15,6 +15,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 
@@ -31,6 +32,15 @@ class ProjectResource extends Resource
             ->schema([
                 TextInput::make('title')
                     ->label('Titre du projet')
+                    ->required(),
+
+                Select::make('category')
+                    ->label('Catégorie')
+                    ->options([
+                        'app'  => 'Applications & Web',
+                        'data' => 'Analyse de données',
+                    ])
+                    ->default('app')
                     ->required(),
 
                 FileUpload::make('image')
@@ -96,6 +106,19 @@ class ProjectResource extends Resource
             ->columns([
                 ImageColumn::make('image')->circular(),
                 TextColumn::make('title')->sortable()->searchable(),
+                TextColumn::make('category')
+                    ->label('Catégorie')
+                    ->badge()
+                    ->color(fn (string $state) => match($state) {
+                        'app'  => 'info',
+                        'data' => 'success',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state) => match($state) {
+                        'app'  => 'App & Web',
+                        'data' => 'Data',
+                        default => $state,
+                    }),
                 TextColumn::make('tags')->badge(),
                 TextColumn::make('views_count')
                     ->label('Vues')

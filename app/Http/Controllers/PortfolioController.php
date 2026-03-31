@@ -23,13 +23,17 @@ class PortfolioController extends Controller
             return Experience::all();
         });
 
-        $projects = Cache::remember('projects', now()->addHours(24), function () {
-            return Project::latest()->get();
+        $apps = Cache::remember('projects_app', now()->addHours(24), function () {
+            return Project::where('category', 'app')->latest()->get();
+        });
+
+        $dataProjects = Cache::remember('projects_data', now()->addHours(24), function () {
+            return Project::where('category', 'data')->latest()->get();
         });
 
         $technologies = Technology::forPortfolio();
 
-        return view('welcome', compact('personalInfo', 'experiences', 'projects', 'technologies'));
+        return view('welcome', compact('personalInfo', 'experiences', 'apps', 'dataProjects', 'technologies'));
     }
 
     public function storeMessage(StoreMessageRequest $request)

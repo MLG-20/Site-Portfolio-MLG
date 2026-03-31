@@ -32,12 +32,30 @@ class ProjectViewsChart extends ChartWidget
                     'borderRadius' => 6,
                 ],
             ],
-            'labels' => $projects->pluck('title')->toArray(),
+            'labels' => $projects->map(fn ($p) => \Illuminate\Support\Str::limit($p->title, 20))->toArray(),
         ];
     }
 
     protected function getType(): string
     {
         return 'bar';
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            'scales' => [
+                'x' => [
+                    'ticks' => [
+                        'maxRotation' => 45,
+                        'minRotation' => 45,
+                        'font' => ['size' => 11],
+                    ],
+                ],
+            ],
+            'plugins' => [
+                'legend' => ['display' => false],
+            ],
+        ];
     }
 }

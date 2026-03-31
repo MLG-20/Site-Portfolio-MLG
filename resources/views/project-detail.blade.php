@@ -3,15 +3,24 @@
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css">
 <style>
-.project-slider .splide__slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-    display: block;
+.project-slider {
+    margin-bottom: 3rem;
 }
 .project-slider .splide__track {
-    border-radius: 12px;
+    border-radius: 1.5rem;
+    box-shadow: 0 1rem 3rem rgba(0,0,0,0.3);
+}
+.project-slider .splide__slide img {
+    width: 100%;
+    height: 55rem;
+    object-fit: cover;
+    border-radius: 1.5rem;
+    display: block;
+}
+@media (max-width: 768px) {
+    .project-slider .splide__slide img {
+        height: 28rem;
+    }
 }
 .project-slider .splide__pagination__page.is-active {
     background: var(--main-color, #00d4ff);

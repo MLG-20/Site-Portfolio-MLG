@@ -45,8 +45,9 @@ cd "$PROJECT_PATH"
 echo -e "${YELLOW}📁 Répertoire: $(pwd)${NC}"
 
 # 2. Récupérer les dernières modifs
-echo -e "${YELLOW}📥 Git pull...${NC}"
-git pull origin "$BRANCH" || { echo -e "${RED}❌ Git pull échoué${NC}"; exit 1; }
+echo -e "${YELLOW}📥 Git fetch et synchronisation...${NC}"
+git fetch origin "$BRANCH" || { echo -e "${RED}❌ Git fetch échoué${NC}"; exit 1; }
+git reset --hard origin/"$BRANCH" || { echo -e "${RED}❌ Git reset échoué${NC}"; exit 1; }
 
 # 3. Installer les dépendances PHP
 echo -e "${YELLOW}📦 Composer install...${NC}"

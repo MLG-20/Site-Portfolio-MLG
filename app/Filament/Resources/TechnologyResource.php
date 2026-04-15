@@ -94,7 +94,7 @@ class TechnologyResource extends Resource
                                 'Frontend'     => 'Frontend',
                                 'Backend'      => 'Backend',
                                 'Analyse de données' => 'Analyse de données',
-                                'Outils'       => 'Outils',
+                                'Outils et DevOps'   => 'Outils et DevOps',
                             ])
                             ->required(),
 
@@ -138,7 +138,7 @@ class TechnologyResource extends Resource
                         'Frontend'     => 'info',
                         'Backend'      => 'success',
                         'Analyse de données' => 'danger',
-                        'Outils'       => 'warning',
+                        'Outils et DevOps'   => 'warning',
                         default        => 'gray',
                     })
                     ->sortable(),
@@ -159,7 +159,7 @@ class TechnologyResource extends Resource
                         'Frontend'     => 'Frontend',
                         'Backend'      => 'Backend',
                         'Analyse de données' => 'Analyse de données',
-                        'Outils'       => 'Outils',
+                        'Outils et DevOps'   => 'Outils et DevOps',
                     ]),
             ])
             ->actions([

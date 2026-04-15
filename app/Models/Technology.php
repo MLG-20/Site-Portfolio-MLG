@@ -20,7 +20,7 @@ class Technology extends Model
      */
     public static function forPortfolio(): \Illuminate\Support\Collection
     {
-        $categoryOrder = ['Backend', 'Frontend', 'Analyse de données', 'Outils'];
+        $categoryOrder = ['Backend', 'Frontend', 'Analyse de données', 'Outils et DevOps'];
 
         $grouped = static::where('is_active', true)
             ->orderBy('order')

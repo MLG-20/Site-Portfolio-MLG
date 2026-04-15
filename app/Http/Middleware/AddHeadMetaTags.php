@@ -19,6 +19,11 @@ class AddHeadMetaTags
             $metaTags = <<<'HTML'
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#1f242d">
+    <style>
+        body {
+            padding-top: env(safe-area-inset-top);
+        }
+    </style>
 </head>
 HTML;
 

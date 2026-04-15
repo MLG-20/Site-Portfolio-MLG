@@ -15,10 +15,10 @@ class MessageNotificationController extends Controller
     {
         // Vérifier s'il y a des messages non lus
         $unreadCount = Message::whereNull('read_at')->count();
-        
+
         // Récupérer le dernier message non lu
         $lastMessage = Message::whereNull('read_at')->latest()->first();
-        
+
         return response()->json([
             'hasNewMessages' => $unreadCount > 0,
             'unreadCount' => $unreadCount,

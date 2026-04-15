@@ -146,7 +146,7 @@ let lastMessageId = null;
 function startMessagePolling() {
   // Vérifier les messages toutes les 30 secondes
   messagePollingInterval = setInterval(checkForNewMessages, 30 * 1000);
-  
+
   // Vérifier immédiatement au démarrage
   checkForNewMessages();
 }

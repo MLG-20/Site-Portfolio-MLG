@@ -138,3 +138,156 @@ window.addEventListener('appinstalled', () => {
   console.log('🎉 PWA installée!');
   // Tracker l'installation (optionnel: envoyer à analytics)
 });
+
+// Système de polling pour les nouveaux messages
+let messagePollingInterval = null;
+let lastMessageId = null;
+
+function startMessagePolling() {
+  // Vérifier les messages toutes les 30 secondes
+  messagePollingInterval = setInterval(checkForNewMessages, 30 * 1000);
+  
+  // Vérifier immédiatement au démarrage
+  checkForNewMessages();
+}
+
+function stopMessagePolling() {
+  if (messagePollingInterval) {
+    clearInterval(messagePollingInterval);
+    messagePollingInterval = null;
+  }
+}
+
+async function checkForNewMessages() {
+  try {
+    const response = await fetch('/api/check-messages', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // Inclure les cookies de session
+    });
+
+    if (!response.ok) {
+      console.warn('⚠️ Erreur lors de la vérification des messages:', response.status);
+      return;
+    }
+
+    const data = await response.json();
+
+    // Si des nouveaux messages non lus existent
+    if (data.hasNewMessages && data.lastMessage) {
+      // Éviter les doublons avec le lastMessageId
+      if (lastMessageId !== data.lastMessage.id) {
+        lastMessageId = data.lastMessage.id;
+        showMessageNotification(data.lastMessage, data.unreadCount);
+      }
+    }
+  } catch (error) {
+    console.warn('⚠️ Erreur polling messages:', error);
+  }
+}
+
+function showMessageNotification(message, unreadCount) {
+  // Vérifier la permission des notifications
+  if (!('Notification' in window)) {
+    console.warn('⚠️ Les notifications ne sont pas supportées');
+    return;
+  }
+
+  if (Notification.permission !== 'granted') {
+    console.warn('⚠️ Permission de notification refusée');
+    return;
+  }
+
+  // Créer la notification
+  const title = `📩 Nouveau message de ${message.name}`;
+  const options = {
+    body: message.subject ? message.subject.substring(0, 50) + '...' : 'Vous avez un nouveau message',
+    icon: '/images/icons/icon-192.png',
+    badge: '/images/icons/icon-96.png',
+    tag: 'new-message',
+    requireInteraction: true,
+    data: {
+      messageId: message.id,
+      timestamp: message.created_at
+    },
+    actions: [
+      {
+        action: 'open-dashboard',
+        title: 'Voir le message'
+      },
+      {
+        action: 'close',
+        title: 'Fermer'
+      }
+    ]
+  };
+
+  // Montrer le nombre de messages non lus dans le titre si > 1
+  if (unreadCount > 1) {
+    const titleWithCount = `📩 ${unreadCount} nouveaux messages`;
+    new Notification(titleWithCount, options);
+  } else {
+    new Notification(title, options);
+  }
+
+  // Jouer un son si disponible
+  playNotificationSound();
+}
+
+function playNotificationSound() {
+  // Créer un son avec l'API Web Audio API (son simple de notification)
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.value = 800; // Fréquence en Hz
+    oscillator.type = 'sine';
+
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+  } catch (error) {
+    console.warn('⚠️ Impossible de jouer le son:', error);
+  }
+}
+
+// Démarrer le polling au chargement de la page
+window.addEventListener('load', () => {
+  // Vérifier s'il y a au moins une notification ou si la page est visible
+  if ('Notification' in window && Notification.permission === 'granted') {
+    startMessagePolling();
+
+    // Arrêter le polling si l'utilisateur quitte la page
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        // Pour une meilleure économie de batterie, optionnel
+        // stopMessagePolling();
+      } else {
+        // Relancer si ce n'est pas actif
+        if (!messagePollingInterval) {
+          startMessagePolling();
+        }
+      }
+    });
+  }
+});
+
+// Gérer les clics sur les notifications
+navigator.serviceWorker.addEventListener('message', event => {
+  if (event.data.type === 'NOTIFICATION_CLICK') {
+    if (event.data.action === 'open-dashboard') {
+      // Ouvrir le lien du dashboard Filament
+      window.open('/admin/dashboard', '_blank');
+    }
+  }
+});
+

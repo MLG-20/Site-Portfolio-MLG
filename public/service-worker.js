@@ -144,3 +144,42 @@ self.addEventListener('message', event => {
     console.log('✅ Cache vidé');
   }
 });
+
+// Gestion des clics sur les notifications
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+
+  // Notifier le client du clic
+  self.clients.matchAll({ type: 'window' }).then(clients => {
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'NOTIFICATION_CLICK',
+        action: event.action
+      });
+    });
+  });
+
+  // Si c'est un clic sur "Voir le message", ouvrir le dashboard
+  if (event.action === 'open-dashboard' || !event.action) {
+    event.waitUntil(
+      clients.matchAll({ type: 'window' }).then(clients => {
+        // Chercher une fenêtre existante
+        for (let client of clients) {
+          if (client.url === '/admin/dashboard' && 'focus' in client) {
+            return client.focus();
+          }
+        }
+        // Sinon, ouvrir une nouvelle fenêtre
+        if (clients.openWindow) {
+          return clients.openWindow('/admin/dashboard');
+        }
+      })
+    );
+  }
+});
+
+// Gestion de la fermeture/action des notifications
+self.addEventListener('notificationclose', event => {
+  console.log('📭 Notification fermée:', event.notification.tag);
+});
+

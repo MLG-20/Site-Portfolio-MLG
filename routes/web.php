@@ -3,9 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\MessageNotificationController;
 
 // Si ce fichier est lu, Laravel DOIT passer par le contrôleur
 Route::get('/', [PortfolioController::class, 'index'])->name('home');
+
+// API pour les notifications PWA
+Route::get('/api/check-messages', [MessageNotificationController::class, 'checkNewMessages'])->name('api.check-messages');
 
 Route::post('/contact', [PortfolioController::class, 'storeMessage'])
     ->name('contact.store')

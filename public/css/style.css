@@ -499,8 +499,9 @@ body.project-detail-page { background: var(--second-bg-color); }
     /* ---- Header ---- */
     .logo { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 1rem; }
     #menu-icon { display: block; }
-    .admin-btn { width: 3.5rem; height: 3.5rem; margin-right: 1rem; }
-    .theme-toggle { margin-right: 1.5rem; }
+    .admin-btn { width: 4rem; height: 4rem; margin-right: 0.8rem; font-size: 1.6rem; }
+    .admin-btn:active { transform: scale(0.95); }
+    .theme-toggle { width: 4rem; height: 4rem; margin-right: 1rem; }
     .navbar { position: absolute; top: 100%; left: 0; width: 100%; padding: 1rem 4%; background: var(--bg-color); border-top: .1rem solid rgba(0,0,0,.2); box-shadow: 0 .5rem 1rem rgba(0,0,0,.2); display: none; }
     .navbar.active { display: block; }
     .navbar a { display: block; font-size: 2rem; margin: 2rem 0; }

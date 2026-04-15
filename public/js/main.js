@@ -179,6 +179,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.documentElement.removeAttribute('data-theme');
             if (themeIcon) { themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); }
         }
+        // Émettre un événement pour synchroniser la couleur de la navbar
+        window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
     }
 
     if (themeToggle) {

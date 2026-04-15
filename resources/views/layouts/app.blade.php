@@ -31,12 +31,32 @@
     <!-- Thème : appliqué avant le rendu pour éviter le flash -->
     <script>
         (function(){
+            // Couleurs synchronisées avec le CSS
+            const colors = {
+                dark: '#1f242d',
+                light: '#f0f4f8'
+            };
+            
+            function updateThemeColor(theme) {
+                const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+                metaThemeColor.setAttribute('content', theme === 'light' ? colors.light : colors.dark);
+            }
+            
             var saved = localStorage.getItem('theme');
             if (saved === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
+                updateThemeColor('light');
             } else if (!saved && window.matchMedia('(prefers-color-scheme: light)').matches) {
                 document.documentElement.setAttribute('data-theme', 'light');
+                updateThemeColor('light');
+            } else {
+                updateThemeColor('dark');
             }
+            
+            // Écouter les changements de thème
+            window.addEventListener('themeChanged', (e) => {
+                updateThemeColor(e.detail.theme);
+            });
         })();
     </script>
 
@@ -83,16 +103,16 @@
     @section('header')
         <header class="header">
             <a href="{{ route('home') }}" class="logo">Portfolio MLG</a>
-            
+
             @auth
-            <a href="{{ route('filament.admin.pages.dashboard') }}" 
-               class="admin-btn" 
+            <a href="{{ route('filament.admin.pages.dashboard') }}"
+               class="admin-btn"
                title="Dashboard Admin"
                aria-label="Accéder au dashboard admin">
                 <i class="fa-solid fa-gauge-high"></i>
             </a>
             @endauth
-            
+
             <button class="theme-toggle" id="theme-toggle" aria-label="Basculer le thème clair/sombre">
                 <i class="fa-solid fa-sun" id="theme-icon"></i>
             </button>

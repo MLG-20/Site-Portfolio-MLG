@@ -1,4 +1,5 @@
-const CACHE_NAME = 'portfolio-mlg-v1';
+const CACHE_NAME = 'portfolio-mlg-' + Date.now();
+const CACHE_PREFIX = 'portfolio-mlg-';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -17,7 +18,7 @@ self.addEventListener('install', event => {
       return cache.addAll(STATIC_ASSETS).catch(err => {
         console.warn('⚠️ Certains assets n\'ont pas pu être cachés:', err);
         // Ne pas échouer l'installation si quelques assets manquent
-        return cache.addAll(STATIC_ASSETS.filter(url => 
+        return cache.addAll(STATIC_ASSETS.filter(url =>
           url.includes('manifest.json') || url.includes('index.html')
         ));
       });
@@ -26,14 +27,23 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// Activation et nettoyage des anciens caches
+// Activation et nettoyage des anciens caches + notification de mise à jour
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
+          if (cacheName.startsWith(CACHE_PREFIX) && cacheName !== CACHE_NAME) {
             console.log('🗑️ Nettoyage du cache:', cacheName);
+            // Notifier les clients qu'une nouvelle version est disponible
+            self.clients.matchAll().then(clients => {
+              clients.forEach(client => {
+                client.postMessage({
+                  type: 'NEW_VERSION_AVAILABLE',
+                  message: 'Une nouvelle version du portfolio est disponible !'
+                });
+              });
+            });
             return caches.delete(cacheName);
           }
         })
@@ -107,7 +117,7 @@ async function networkFirst(request) {
 // Stale While Revalidate : retourner le cache immédiatement, mettre à jour en arrière-plan
 async function staleWhileRevalidate(request) {
   const cached = await caches.match(request);
-  
+
   const fetchPromise = fetch(request).then(response => {
     if (response.ok) {
       const cache = caches.open(CACHE_NAME);

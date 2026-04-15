@@ -77,6 +77,10 @@ section { min-height: 100vh; padding: 10rem 9% 2rem; }
 .theme-toggle { background: none; border: .2rem solid var(--main-color-solid); border-radius: 50%; width: 4rem; height: 4rem; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--main-color-solid); font-size: 1.8rem; transition: all .3s ease; margin-left: auto; margin-right: 2rem; }
 .theme-toggle:hover { background: var(--main-color-gradient); color: #fff; border-color: var(--main-color-solid); }
 
+/* Admin Button */
+.admin-btn { background: none; border: .2rem solid #ef4444; border-radius: 50%; width: 4rem; height: 4rem; display: flex; justify-content: center; align-items: center; cursor: pointer; color: #ef4444; font-size: 1.8rem; transition: all .3s ease; margin-right: 2rem; text-decoration: none; }
+.admin-btn:hover { background: linear-gradient(45deg, #ef4444, #dc2626); color: #fff; border-color: #ef4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+
 /* =========================================================
    5. SECTION ACCUEIL
    ========================================================= */
@@ -495,6 +499,7 @@ body.project-detail-page { background: var(--second-bg-color); }
     /* ---- Header ---- */
     .logo { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 1rem; }
     #menu-icon { display: block; }
+    .admin-btn { width: 3.5rem; height: 3.5rem; margin-right: 1rem; }
     .theme-toggle { margin-right: 1.5rem; }
     .navbar { position: absolute; top: 100%; left: 0; width: 100%; padding: 1rem 4%; background: var(--bg-color); border-top: .1rem solid rgba(0,0,0,.2); box-shadow: 0 .5rem 1rem rgba(0,0,0,.2); display: none; }
     .navbar.active { display: block; }

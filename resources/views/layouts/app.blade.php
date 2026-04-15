@@ -83,6 +83,16 @@
     @section('header')
         <header class="header">
             <a href="{{ route('home') }}" class="logo">Portfolio MLG</a>
+            
+            @auth
+            <a href="{{ route('filament.admin.pages.dashboard') }}" 
+               class="admin-btn" 
+               title="Dashboard Admin"
+               aria-label="Accéder au dashboard admin">
+                <i class="fa-solid fa-gauge-high"></i>
+            </a>
+            @endauth
+            
             <button class="theme-toggle" id="theme-toggle" aria-label="Basculer le thème clair/sombre">
                 <i class="fa-solid fa-sun" id="theme-icon"></i>
             </button>

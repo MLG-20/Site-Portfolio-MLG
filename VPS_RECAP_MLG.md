@@ -26,31 +26,26 @@ cd /var/www/portfolio
 
 ## 🔄 Déployer une mise à jour
 
-### Utiliser le script (RECOMMANDÉ)
+### Option 1: Depuis ta machine (SSH)
 ```bash
-# Copier le script sur le VPS d'abord
-scp deploy.sh root@167.86.94.135:/opt/
-
-# Pour MIO Ressources
-ssh root@167.86.94.135 "bash /opt/deploy.sh mio-ressources-site main"
-
-# Pour Portfolio
-ssh root@167.86.94.135 "bash /opt/deploy.sh portfolio main"
+ssh root@167.86.94.135 "cd /var/www/portfolio && bash ./deploy.sh"
+ssh root@167.86.94.135 "cd /var/www/mio-ressources-site && bash ./deploy.sh"
 ```
 
-### Déploiement manuel (MIO Ressources)
+### Option 2: Depuis le VPS (PLUS SIMPLE ✨)
 ```bash
+# Portfolio
+cd /var/www/portfolio
+./deploy.sh          # ou: ./deploy.sh develop (pour une autre branche)
+
+# MIO Ressources
 cd /var/www/mio-ressources-site
-git pull origin main
-composer install --no-dev --optimize-autoloader
-npm run build
-php artisan migrate --force
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+./deploy.sh          # ou: ./deploy.sh develop
 ```
 
-### Déploiement manuel (Portfolio)
+### Déploiement manuel (si besoin)
+
+**Portfolio:**
 ```bash
 cd /var/www/portfolio
 git pull origin main
@@ -59,6 +54,21 @@ npm run build
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+systemctl restart php8.4-fpm
+systemctl reload nginx
+```
+
+**MIO Ressources:**
+```bash
+cd /var/www/mio-ressources-site
+git pull origin main
+composer install --no-dev --optimize-autoloader
+npm run build
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+systemctl restart php8.4-fpm
+systemctl reload nginx
 ```
 
 ---
@@ -204,31 +214,24 @@ cd /var/www/mio-ressources-site && php artisan cache:clear && php artisan config
 
 ## 🤖 Guide du script deploy.sh
 
-### Installation du script
+### Auto-détection du projet ✨
+
+Le script détecte **automatiquement** quel projet tu déploies selon ton dossier courant :
 
 ```bash
-# Sur ta machine locale
-scp deploy.sh root@167.86.94.135:/opt/
+# Depuis /var/www/portfolio
+cd /var/www/portfolio
+./deploy.sh              # ✅ Détecte = portfolio
+./deploy.sh develop      # ✅ Branche develop, projet = portfolio
 
-# Rendre exécutable
-ssh root@167.86.94.135 "chmod +x /opt/deploy.sh"
-```
-
-### Utilisation
-
-```bash
-# Déployer Portfolio
-ssh root@167.86.94.135 "bash /opt/deploy.sh portfolio main"
-
-# Déployer MIO Ressources
-ssh root@167.86.94.135 "bash /opt/deploy.sh mio-ressources-site main"
-
-# Depuis le VPS directement
-/opt/deploy.sh portfolio main
-/opt/deploy.sh mio-ressources-site main
+# Depuis /var/www/mio-ressources-site
+cd /var/www/mio-ressources-site
+./deploy.sh              # ✅ Détecte = mio-ressources-site
+./deploy.sh main         # ✅ Branche main, projet = mio-ressources-site
 ```
 
 ### Features du script
+✅ **Auto-détection du projet**  
 ✅ Git pull automatique  
 ✅ Composer + NPM build  
 ✅ Caches (config, routes, views)  

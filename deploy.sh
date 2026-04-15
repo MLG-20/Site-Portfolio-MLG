@@ -1,9 +1,12 @@
 #!/bin/bash
 
 # Script de déploiement en production
-# Usage: ./deploy.sh [project_name] [branch]
-# Example: ./deploy.sh portfolio main
-#          ./deploy.sh mio-ressources-site main
+# Usage: ./deploy.sh [branch]
+# Ou depuis n'importe quel dossier: ./deploy.sh [project_name] [branch]
+# Examples:
+#   ./deploy.sh                      # Détecte automatiquement le projet courant, branche main
+#   ./deploy.sh develop              # Branche develop, projet détecté automatiquement
+#   ./deploy.sh portfolio main       # Spécifier explicitement (si utile)
 
 set -e  # Arrêter si une erreur occur
 
@@ -14,9 +17,19 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Variables
-PROJECT_NAME="${1:-portfolio}"
-BRANCH="${2:-main}"
 BASE_PATH="/var/www"
+
+# Auto-détection du projet si on est dans un repo
+CURRENT_DIR=$(basename "$(pwd)")
+if [ "$CURRENT_DIR" = "portfolio" ] || [ "$CURRENT_DIR" = "mio-ressources-site" ]; then
+    PROJECT_NAME="$CURRENT_DIR"
+    BRANCH="${1:-main}"
+else
+    # Mode manuel si on n'est pas dans un dossier projet
+    PROJECT_NAME="${1:-portfolio}"
+    BRANCH="${2:-main}"
+fi
+
 PROJECT_PATH="$BASE_PATH/$PROJECT_NAME"
 
 # Vérifier les paramètres

@@ -18,6 +18,16 @@
 
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=2">
 
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Portfolio MLG">
+    <link rel="apple-touch-icon" href="{{ asset('images/icons/icon-192.png') }}">
+    <meta name="msapplication-config" content="{{ asset('browserconfig.xml') }}">
+    <meta name="msapplication-TileColor" content="#3b82f6">
+
     <!-- Thème : appliqué avant le rendu pour éviter le flash -->
     <script>
         (function(){
@@ -145,6 +155,7 @@
     <a href="#" class="back-to-top"><i class="fa-solid fa-arrow-up"></i></a>
 
     <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="{{ asset('js/pwa.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
 
     @stack('scripts')

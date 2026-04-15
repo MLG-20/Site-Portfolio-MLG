@@ -34,6 +34,15 @@ class ProjectObserver
 
     private function clearCache(): void
     {
+        // Vider le cache spécifique
         Cache::forget('projects');
+        Cache::forget('projects_published');
+        
+        // Vider tous les caches lors de modifications en prod
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        
+        // Optional: vider les views si besoin
+        // \Illuminate\Support\Facades\Artisan::call('view:clear');
     }
 }

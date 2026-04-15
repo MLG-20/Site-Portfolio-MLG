@@ -60,6 +60,13 @@
         })();
     </script>
 
+    <!-- Safe Area Padding pour Mobile Notch -->
+    <style>
+        .header {
+            padding-top: max(0.8rem, env(safe-area-inset-top)) !important;
+        }
+    </style>
+
     <!-- Polices -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

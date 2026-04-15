@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#1f242d">
 
     <title>@yield('meta_title', ($personalInfo->name ?? 'Portfolio') . ' | Portfolio')</title>
@@ -36,12 +36,12 @@
                 dark: '#1f242d',
                 light: '#f0f4f8'
             };
-            
+
             function updateThemeColor(theme) {
                 const metaThemeColor = document.querySelector('meta[name="theme-color"]');
                 metaThemeColor.setAttribute('content', theme === 'light' ? colors.light : colors.dark);
             }
-            
+
             var saved = localStorage.getItem('theme');
             if (saved === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
@@ -52,7 +52,7 @@
             } else {
                 updateThemeColor('dark');
             }
-            
+
             // Écouter les changements de thème
             window.addEventListener('themeChanged', (e) => {
                 updateThemeColor(e.detail.theme);

@@ -1,0 +1,109 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Évite deux pipelines simultanés sur la même branche
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ─────────────────────────────────────────────────────────────
+  # CI : installation + tests (sur push ET pull request)
+  # ─────────────────────────────────────────────────────────────
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: portfolio_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: portfolio_test
+      DB_USERNAME: root
+      DB_PASSWORD: root
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo, pdo_mysql, bcmath, intl, gd, zip
+          coverage: none
+
+      - name: Cache des dépendances Composer
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Composer install
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Préparer l'environnement
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: NPM install + build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Attendre MySQL
+        run: |
+          until mysqladmin ping -h 127.0.0.1 -uroot -proot --silent; do
+            echo "En attente de MySQL..."; sleep 2;
+          done
+
+      - name: Lancer les tests
+        run: php artisan test
+
+  # ─────────────────────────────────────────────────────────────
+  # CD : déploiement sur le VPS (uniquement sur push main, tests OK)
+  # ─────────────────────────────────────────────────────────────
+  deploy:
+    name: Déploiement production
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Déployer via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script_stop: true
+          command_timeout: 15m
+          script: |
+            cd /var/www/portfolio
+            bash ./deploy.sh main

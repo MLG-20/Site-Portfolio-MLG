@@ -16,7 +16,9 @@
     <meta property="og:type" content="website">
     <link rel="canonical" href="{{ url()->current() }}">
 
-    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=2">
+    <link rel="icon" href="{{ asset('favicon.ico') }}?v=3" sizes="any">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}?v=3">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=3">
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="{{ asset('manifest.json') }}">

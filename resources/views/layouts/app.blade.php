@@ -109,7 +109,11 @@
 
     @section('header')
         <header class="header">
-            <a href="{{ route('home') }}" class="logo">Portfolio MLG</a>
+            <a href="{{ route('home') }}" class="logo">
+                <img src="{{ asset('images/icons/logo-header.png') }}" alt="Logo MLG"
+                     style="height:38px;width:38px;border-radius:8px;vertical-align:middle;margin-right:10px;">
+                <span style="vertical-align:middle;">Portfolio MLG</span>
+            </a>
 
             @auth
             <a href="{{ route('filament.admin.pages.dashboard') }}"

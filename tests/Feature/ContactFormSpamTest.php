@@ -32,6 +32,24 @@ class ContactFormSpamTest extends TestCase
         $this->assertDatabaseCount('messages', 1);
     }
 
+    public function test_le_jeton_time_trap_rendu_est_decodable(): void
+    {
+        // Charge la vraie page d'accueil et extrait le champ form_ts généré par
+        // la vue, puis vérifie qu'il se décode bien avec Crypt::decryptString()
+        // (côté validation). Garde-fou contre un mismatch encrypt/encryptString.
+        $page = $this->get('/');
+        $page->assertOk();
+
+        $this->assertSame(
+            1,
+            preg_match('/name="form_ts"\s+value="([^"]+)"/', $page->getContent(), $m),
+            'Le champ form_ts est absent du formulaire.'
+        );
+
+        $timestamp = (int) Crypt::decryptString(html_entity_decode($m[1]));
+        $this->assertEqualsWithDelta(time(), $timestamp, 10, 'Le jeton form_ts ne décode pas vers un horodatage récent.');
+    }
+
     public function test_le_honeypot_bloque_le_spam(): void
     {
         $response = $this->post('/contact', $this->payload(['website' => 'http://spam.example']));

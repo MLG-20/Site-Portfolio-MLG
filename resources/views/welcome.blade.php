@@ -159,7 +159,13 @@
 
                 <form action="{{ route('contact.store') }}" method="POST">
                     @csrf
-                    <input type="text" name="website" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true">
+                    {{-- Time-trap : horodatage chiffré de l'affichage du formulaire --}}
+                    <input type="hidden" name="form_ts" value="{{ encrypt(time()) }}">
+                    {{-- Honeypots : invisibles pour les humains, remplis par les bots --}}
+                    <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden;">
+                        <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+                        <label>URL<input type="text" name="url" tabindex="-1" autocomplete="off"></label>
+                    </div>
                     <div class="input-box">
                         <div class="input-group">
                             <input type="text" name="name" placeholder="Nom Complet" value="{{ old('name') }}" required>
@@ -182,6 +188,14 @@
                     </div>
                     <textarea name="message" cols="30" rows="10" placeholder="Message" required>{{ old('message') }}</textarea>
                     @error('message') <span class="form-error">{{ $message }}</span> @enderror
+
+                    @error('form_ts') <span class="form-error">{{ $message }}</span> @enderror
+
+                    @if(config('services.turnstile.sitekey'))
+                        <div class="cf-turnstile" data-sitekey="{{ config('services.turnstile.sitekey') }}" data-theme="auto"></div>
+                        @error('cf-turnstile-response') <span class="form-error">{{ $message }}</span> @enderror
+                    @endif
+
                     <input type="submit" value="Envoyer" class="btn" id="submit-btn">
                 </form>
             </div>
@@ -190,3 +204,9 @@
     </section>
 
 @endsection
+
+@if(config('services.turnstile.sitekey'))
+    @push('scripts')
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endpush
+@endif

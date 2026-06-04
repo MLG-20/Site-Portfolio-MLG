@@ -40,8 +40,14 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             
             // On utilise la classe Login qu'on vient d'importer
-            ->login(Login::class) 
+            ->login(Login::class)
             ->passwordReset()
+
+            // Branding : logo MLG au lieu de « Laravel »
+            ->brandName('Portfolio MLG')
+            ->brandLogo(asset('images/icons/logo-header.png'))
+            ->brandLogoHeight('2.2rem')
+            ->favicon(asset('favicon.png'))
 
             ->colors([
                 'primary' => Color::Amber,

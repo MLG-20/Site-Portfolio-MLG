@@ -17,6 +17,10 @@ class SecurityHeaders
     {
         $response = $next($request);
 
+        // HSTS — force le HTTPS côté navigateur (appliqué à toutes les réponses,
+        // y compris /admin). Le site est déjà servi exclusivement en HTTPS.
+        $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+
         if ($request->is('admin*')) {
             return $response;
         }

@@ -13,6 +13,12 @@ class MessageNotificationController extends Controller
      */
     public function checkNewMessages()
     {
+        // Endpoint réservé à l'admin connecté : sans cela, n'importe qui pourrait
+        // lire le nom/email/sujet des messages des visiteurs (fuite de données).
+        if (! Auth::check()) {
+            return response()->json(['message' => 'Unauthenticated.'], 401);
+        }
+
         // Vérifier s'il y a des messages non lus
         $unreadCount = Message::whereNull('read_at')->count();
 

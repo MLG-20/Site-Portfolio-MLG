@@ -109,10 +109,10 @@
 
     @section('header')
         <header class="header">
-            <a href="{{ route('home') }}" class="logo" style="display:inline-flex;align-items:center;gap:10px;">
-                <img src="{{ asset('images/icons/logo-header.png') }}" alt="Logo MLG"
-                     style="height:38px;width:38px;border-radius:8px;flex-shrink:0;">
-                <span>Portfolio MLG</span>
+            <a href="{{ route('home') }}" class="logo" aria-label="Accueil — Portfolio MLG"
+               style="display:inline-flex;align-items:center;">
+                <img src="{{ asset('images/icons/logo-header.png') }}" alt="Logo Portfolio MLG"
+                     style="height:56px;width:56px;border-radius:10px;flex-shrink:0;">
             </a>
 
             @auth
